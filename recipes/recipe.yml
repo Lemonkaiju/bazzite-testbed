@@ -20,7 +20,7 @@ modules:
       install:
         # Development & 3D
         - org.godotengine.Godot
-        - com.chitubox.CHITUBOX
+        
         
         # Web Access & Work Remote Desktop Webclient
         - com.google.Chrome
