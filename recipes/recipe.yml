@@ -39,4 +39,4 @@ modules:
         # Enables Secure Shell for command-line remote access
         - sshd
         
-  - type: signing # Signs your image so the OS knows it's secure
+
