@@ -1,6 +1,6 @@
 name: Generate ISO
 on:
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -18,16 +18,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install BlueBuild CLI
+      - name: Build ISO
         run: |
-          # Official installer script
+          # 1. Install BlueBuild CLI
           bash <(curl -fsSL https://blue-build.org/install.sh)
-          # Ensure it's in the PATH
-          echo "/home/runner/.local/bin" >> $GITHUB_PATH
-
-      - name: Generate ISO
-        run: |
-          # Use the CLI to generate the ISO
+          
+          # 2. Add to PATH for this specific shell session
+          export PATH="/home/runner/.local/bin:$PATH"
+          
+          # 3. Verify installation
+          bluebuild --version
+          
+          # 4. Generate ISO
           bluebuild generate-iso recipe recipes/recipe.yml \
             --iso-name bazzite-latitude.iso \
             --output-dir ./output
