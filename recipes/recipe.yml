@@ -1,16 +1,22 @@
 ---
-# Image will be published to your GitHub container registry
+# Custom Bazzite build for Dell Latitude 5320/7320 Tablet & 2-in-1
 name: bazzite-testbed
-description: Custom Bazzite image with KDE, dev tools, and remote access.
+description: Tablet-optimized Bazzite with developer tools and light gaming support.
 
-# We are using the standard KDE Plasma Bazzite AMD/Intel image
 base-image: ghcr.io/ublue-os/bazzite
 image-version: latest
 
 modules:
   - type: rpm-ostree
     install:
-      # Core system tools and terminal shells
+      # Hardware enablement
+      - iio-sensor-proxy
+      - fprintd
+      - fprintd-pam
+      # Gaming & 3D compatibility
+      - mesa-vulkan-drivers.i686
+      - vulkan-loader.i686
+      # Terminal tools
       - zsh
       - fish
 
@@ -18,25 +24,28 @@ modules:
     notify: true
     system:
       install:
-        # Development & 3D
+        # Development
         - org.godotengine.Godot
-        
-        
-        # Web Access & Work Remote Desktop Webclient
+        - com.visualstudio.code
+        # Web & Remote
         - com.google.Chrome
         - com.microsoft.Edge
         - org.mozilla.Thunderbird
-        
-        # Remote Support
         - com.rustdesk.RustDesk
-        
         # Media
         - com.spotify.Client
 
   - type: systemd
     system:
       enabled:
-        # Enables Secure Shell for command-line remote access
         - sshd
-        
+        - iio-sensor-proxy
+        - fprintd
 
+  - type: script
+    scripts:
+      - dell-tuning.sh
+
+# Adding kernel arguments for Tiger Lake stability and Deep Sleep
+  - type: akmods
+    # (Using script for kargs as it's more universal across templates)

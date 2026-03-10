@@ -1,0 +1,37 @@
+name: generate-iso
+on:
+  workflow_dispatch: # Manual trigger only to save resources
+  push:
+    paths:
+      - 'recipes/recipe.yml'
+      - 'scripts/**'
+
+jobs:
+  generate-iso:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate ISO
+        uses: blue-build/github-action@v1.11
+        with:
+          recipe: 'recipes/recipe.yml'
+          # We use a netinstall ISO that pulls your custom image
+          build_opts: "--no-sign"
+          # This generates the ISO as an artifact
+          generate_iso: true
+          # Select a fast mirror
+          fedora_version: 40
+
+      - name: Upload ISO Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bazzite-latitude-iso
+          path: |
+            *.iso
+            *.iso-sha256sum
