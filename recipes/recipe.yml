@@ -45,7 +45,3 @@ modules:
   - type: script
     scripts:
       - dell-tuning.sh
-
-# Adding kernel arguments for Tiger Lake stability and Deep Sleep
-  - type: akmods
-    # (Using script for kargs as it's more universal across templates)
