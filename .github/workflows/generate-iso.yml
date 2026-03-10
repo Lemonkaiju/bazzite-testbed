@@ -20,14 +20,14 @@ jobs:
 
       - name: Install BlueBuild CLI
         run: |
-          curl -L https://github.com/blue-build/cli/releases/latest/download/bluebuild-linux-x86_64 -o bluebuild
-          chmod +x bluebuild
-          sudo mv bluebuild /usr/local/bin/
+          # Official installer script
+          bash <(curl -fsSL https://blue-build.org/install.sh)
+          # Ensure it's in the PATH
+          echo "/home/runner/.local/bin" >> $GITHUB_PATH
 
       - name: Generate ISO
         run: |
-          # This command builds a netinstall ISO that will pull your custom image
-          # The identity 'recipe' tells it to look in the recipes folder
+          # Use the CLI to generate the ISO
           bluebuild generate-iso recipe recipes/recipe.yml \
             --iso-name bazzite-latitude.iso \
             --output-dir ./output

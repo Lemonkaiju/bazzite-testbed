@@ -1,0 +1,142 @@
+﻿2026-03-10T03:32:27.0873814Z Current runner version: '2.332.0'
+2026-03-10T03:32:27.0897839Z ##[group]Runner Image Provisioner
+2026-03-10T03:32:27.0898745Z Hosted Compute Agent
+2026-03-10T03:32:27.0899347Z Version: 20260213.493
+2026-03-10T03:32:27.0899997Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-03-10T03:32:27.0900684Z Build Date: 2026-02-13T00:28:41Z
+2026-03-10T03:32:27.0901454Z Worker ID: {db599c98-00b8-42af-aaf5-e66fef3b1a42}
+2026-03-10T03:32:27.0902183Z Azure Region: westus
+2026-03-10T03:32:27.0902939Z ##[endgroup]
+2026-03-10T03:32:27.0904454Z ##[group]Operating System
+2026-03-10T03:32:27.0905070Z Ubuntu
+2026-03-10T03:32:27.0905566Z 24.04.3
+2026-03-10T03:32:27.0906019Z LTS
+2026-03-10T03:32:27.0906570Z ##[endgroup]
+2026-03-10T03:32:27.0907049Z ##[group]Runner Image
+2026-03-10T03:32:27.0907583Z Image: ubuntu-24.04
+2026-03-10T03:32:27.0908180Z Version: 20260302.42.1
+2026-03-10T03:32:27.0909383Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260302.42/images/ubuntu/Ubuntu2404-Readme.md
+2026-03-10T03:32:27.0910914Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260302.42
+2026-03-10T03:32:27.0911848Z ##[endgroup]
+2026-03-10T03:32:27.0913233Z ##[group]GITHUB_TOKEN Permissions
+2026-03-10T03:32:27.0915056Z Contents: read
+2026-03-10T03:32:27.0915634Z Metadata: read
+2026-03-10T03:32:27.0916253Z Packages: read
+2026-03-10T03:32:27.0916732Z ##[endgroup]
+2026-03-10T03:32:27.0918936Z Secret source: Actions
+2026-03-10T03:32:27.0919723Z Prepare workflow directory
+2026-03-10T03:32:27.1251785Z Prepare all required actions
+2026-03-10T03:32:27.1291243Z Getting action download info
+2026-03-10T03:32:27.5817602Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-03-10T03:32:27.7591672Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-03-10T03:32:27.9810016Z Complete job name: build-iso
+2026-03-10T03:32:28.0526899Z ##[group]Run actions/checkout@v4
+2026-03-10T03:32:28.0527735Z with:
+2026-03-10T03:32:28.0528184Z   repository: Lemonkaiju/bazzite-testbed
+2026-03-10T03:32:28.0528893Z   token: ***
+2026-03-10T03:32:28.0529270Z   ssh-strict: true
+2026-03-10T03:32:28.0529672Z   ssh-user: git
+2026-03-10T03:32:28.0530070Z   persist-credentials: true
+2026-03-10T03:32:28.0530513Z   clean: true
+2026-03-10T03:32:28.0530918Z   sparse-checkout-cone-mode: true
+2026-03-10T03:32:28.0531391Z   fetch-depth: 1
+2026-03-10T03:32:28.0531779Z   fetch-tags: false
+2026-03-10T03:32:28.0532177Z   show-progress: true
+2026-03-10T03:32:28.0532577Z   lfs: false
+2026-03-10T03:32:28.0533336Z   submodules: false
+2026-03-10T03:32:28.0533755Z   set-safe-directory: true
+2026-03-10T03:32:28.0534569Z ##[endgroup]
+2026-03-10T03:32:28.1684517Z Syncing repository: Lemonkaiju/bazzite-testbed
+2026-03-10T03:32:28.1686284Z ##[group]Getting Git version info
+2026-03-10T03:32:28.1687553Z Working directory is '/home/runner/work/bazzite-testbed/bazzite-testbed'
+2026-03-10T03:32:28.1688911Z [command]/usr/bin/git version
+2026-03-10T03:32:28.1823734Z git version 2.53.0
+2026-03-10T03:32:28.1867475Z ##[endgroup]
+2026-03-10T03:32:28.1888615Z Temporarily overriding HOME='/home/runner/work/_temp/ffd193ee-134d-4e11-a709-ee93290ac9f9' before making global git config changes
+2026-03-10T03:32:28.1890673Z Adding repository directory to the temporary git global config as a safe directory
+2026-03-10T03:32:28.1908039Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/bazzite-testbed/bazzite-testbed
+2026-03-10T03:32:28.1960146Z Deleting the contents of '/home/runner/work/bazzite-testbed/bazzite-testbed'
+2026-03-10T03:32:28.1965105Z ##[group]Initializing the repository
+2026-03-10T03:32:28.1971593Z [command]/usr/bin/git init /home/runner/work/bazzite-testbed/bazzite-testbed
+2026-03-10T03:32:28.2144284Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-03-10T03:32:28.2146042Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-03-10T03:32:28.2147622Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-03-10T03:32:28.2149109Z hint: call:
+2026-03-10T03:32:28.2149760Z hint:
+2026-03-10T03:32:28.2150577Z hint: 	git config --global init.defaultBranch <name>
+2026-03-10T03:32:28.2151681Z hint:
+2026-03-10T03:32:28.2152810Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-03-10T03:32:28.2154488Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-03-10T03:32:28.2155724Z hint:
+2026-03-10T03:32:28.2156389Z hint: 	git branch -m <name>
+2026-03-10T03:32:28.2157209Z hint:
+2026-03-10T03:32:28.2158254Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-03-10T03:32:28.2160153Z Initialized empty Git repository in /home/runner/work/bazzite-testbed/bazzite-testbed/.git/
+2026-03-10T03:32:28.2164041Z [command]/usr/bin/git remote add origin https://github.com/Lemonkaiju/bazzite-testbed
+2026-03-10T03:32:28.2203724Z ##[endgroup]
+2026-03-10T03:32:28.2204907Z ##[group]Disabling automatic garbage collection
+2026-03-10T03:32:28.2209006Z [command]/usr/bin/git config --local gc.auto 0
+2026-03-10T03:32:28.2241483Z ##[endgroup]
+2026-03-10T03:32:28.2242891Z ##[group]Setting up auth
+2026-03-10T03:32:28.2249767Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-03-10T03:32:28.2284177Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-03-10T03:32:28.2659219Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-03-10T03:32:28.2693492Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-03-10T03:32:28.2936784Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-03-10T03:32:28.2968824Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-03-10T03:32:28.3226451Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-03-10T03:32:28.3263758Z ##[endgroup]
+2026-03-10T03:32:28.3265015Z ##[group]Fetching the repository
+2026-03-10T03:32:28.3274163Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +32f301da11707f61c86b47e24feceb76d744bb13:refs/remotes/origin/main
+2026-03-10T03:32:28.7628175Z From https://github.com/Lemonkaiju/bazzite-testbed
+2026-03-10T03:32:28.7629801Z  * [new ref]         32f301da11707f61c86b47e24feceb76d744bb13 -> origin/main
+2026-03-10T03:32:28.7664477Z ##[endgroup]
+2026-03-10T03:32:28.7665840Z ##[group]Determining the checkout info
+2026-03-10T03:32:28.7667420Z ##[endgroup]
+2026-03-10T03:32:28.7671901Z [command]/usr/bin/git sparse-checkout disable
+2026-03-10T03:32:28.7715495Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-03-10T03:32:28.7742551Z ##[group]Checking out the ref
+2026-03-10T03:32:28.7746564Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-03-10T03:32:28.7870255Z Switched to a new branch 'main'
+2026-03-10T03:32:28.7871974Z branch 'main' set up to track 'origin/main'.
+2026-03-10T03:32:28.7875383Z ##[endgroup]
+2026-03-10T03:32:28.7877481Z [command]/usr/bin/git log -1 --format=%H
+2026-03-10T03:32:28.7886300Z 32f301da11707f61c86b47e24feceb76d744bb13
+2026-03-10T03:32:28.8101494Z ##[group]Run curl -L https://github.com/blue-build/cli/releases/latest/download/bluebuild-linux-x86_64 -o bluebuild
+2026-03-10T03:32:28.8104022Z [36;1mcurl -L https://github.com/blue-build/cli/releases/latest/download/bluebuild-linux-x86_64 -o bluebuild[0m
+2026-03-10T03:32:28.8105564Z [36;1mchmod +x bluebuild[0m
+2026-03-10T03:32:28.8106449Z [36;1msudo mv bluebuild /usr/local/bin/[0m
+2026-03-10T03:32:28.8161323Z shell: /usr/bin/bash -e {0}
+2026-03-10T03:32:28.8162518Z ##[endgroup]
+2026-03-10T03:32:28.8317097Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-03-10T03:32:28.8318741Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-03-10T03:32:28.8319607Z 
+2026-03-10T03:32:29.1103469Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-03-10T03:32:29.1105988Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-03-10T03:32:29.2409756Z 
+2026-03-10T03:32:29.2411042Z 100     9  100     9    0     0     21      0 --:--:-- --:--:-- --:--:--    21
+2026-03-10T03:32:29.2594276Z ##[group]Run # This command builds a netinstall ISO that will pull your custom image
+2026-03-10T03:32:29.2596516Z [36;1m# This command builds a netinstall ISO that will pull your custom image[0m
+2026-03-10T03:32:29.2598468Z [36;1m# The identity 'recipe' tells it to look in the recipes folder[0m
+2026-03-10T03:32:29.2600212Z [36;1mbluebuild generate-iso recipe recipes/recipe.yml \[0m
+2026-03-10T03:32:29.2601680Z [36;1m  --iso-name bazzite-latitude.iso \[0m
+2026-03-10T03:32:29.2603126Z [36;1m  --output-dir ./output[0m
+2026-03-10T03:32:29.2653215Z shell: /usr/bin/bash -e {0}
+2026-03-10T03:32:29.2654111Z ##[endgroup]
+2026-03-10T03:32:29.2739801Z /usr/local/bin/bluebuild: line 1: Not: command not found
+2026-03-10T03:32:29.2756439Z ##[error]Process completed with exit code 127.
+2026-03-10T03:32:29.2960046Z Post job cleanup.
+2026-03-10T03:32:29.3935103Z [command]/usr/bin/git version
+2026-03-10T03:32:29.3973324Z git version 2.53.0
+2026-03-10T03:32:29.4022025Z Temporarily overriding HOME='/home/runner/work/_temp/7601b322-9a73-4e07-8977-b8716b99c6ce' before making global git config changes
+2026-03-10T03:32:29.4028829Z Adding repository directory to the temporary git global config as a safe directory
+2026-03-10T03:32:29.4032948Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/bazzite-testbed/bazzite-testbed
+2026-03-10T03:32:29.4070824Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-03-10T03:32:29.4114636Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-03-10T03:32:29.4383988Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-03-10T03:32:29.4407581Z http.https://github.com/.extraheader
+2026-03-10T03:32:29.4422255Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-03-10T03:32:29.4457520Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-03-10T03:32:29.4699250Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-03-10T03:32:29.4733670Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-03-10T03:32:29.5104227Z Cleaning up orphan processes
