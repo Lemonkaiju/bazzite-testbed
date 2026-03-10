@@ -40,6 +40,12 @@ modules:
         - org.tuxpaint.Tuxpaint
         - com.github.xournalpp.xournalpp
         - io.lmms.LMMS
+        # Games
+        - info.beyondallreason.bar
+        - com.github.Anuken.Mindustry
+        - net.minetest.Minetest
+        - com.play0ad.zeroad
+        - net.veloren.veloren
 
   - type: systemd
     system:
