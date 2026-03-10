@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/set-lemonkaiju-wallpaper.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=Set LemonKaiju Wallpaper
+Name=Set LemonKaiju Wallpaper
+Comment[en_US]=Sets the custom Bazzite wallpaper on first boot
+Comment=Sets the custom Bazzite wallpaper on first boot
