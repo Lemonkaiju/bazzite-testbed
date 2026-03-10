@@ -1,13 +1,6 @@
 name: Generate ISO
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - 'recipes/**'
-      - 'files/scripts/**'
-      - '.github/workflows/generate-iso.yml'
+  workflow_dispatch: # Allows you to manually trigger it if you ever need a fresh USB
 
 jobs:
   build-iso:
@@ -24,7 +17,7 @@ jobs:
           # 1. Install BlueBuild CLI
           curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
           
-          # 2. Generate ISO (Correcting argument order: options must come BEFORE subcommand)
+          # 2. Generate ISO 
           bluebuild generate-iso \
             --iso-name bazzite-latitude.iso \
             --output-dir ./output \
