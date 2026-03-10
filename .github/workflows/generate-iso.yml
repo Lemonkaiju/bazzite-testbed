@@ -21,11 +21,14 @@ jobs:
 
       - name: Build ISO
         run: |
-          # Download and install BlueBuild CLI to the current directory
-          curl -fsSL https://blue-build.org/install.sh | BIN_DIR=. bash
+          # 1. Install BlueBuild CLI from the correct GitHub URL
+          curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
           
-          # Run the locally installed binary directly
-          ./bluebuild generate-iso recipe recipes/recipe.yml \
+          # 2. Verify installation
+          bluebuild --version
+          
+          # 3. Generate ISO
+          bluebuild generate-iso recipe recipes/recipe.yml \
             --iso-name bazzite-latitude.iso \
             --output-dir ./output
 
