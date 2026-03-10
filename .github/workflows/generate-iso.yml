@@ -21,16 +21,14 @@ jobs:
 
       - name: Build ISO
         run: |
-          # 1. Install BlueBuild CLI from the correct GitHub URL
+          # 1. Install BlueBuild CLI
           curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
           
-          # 2. Verify installation
-          bluebuild --version
-          
-          # 3. Generate ISO
-          bluebuild generate-iso recipe recipes/recipe.yml \
+          # 2. Generate ISO (Correcting argument order: options must come BEFORE subcommand)
+          bluebuild generate-iso \
             --iso-name bazzite-latitude.iso \
-            --output-dir ./output
+            --output-dir ./output \
+            recipe recipes/recipe.yml
 
       - name: Upload ISO Artifact
         uses: actions/upload-artifact@v4
