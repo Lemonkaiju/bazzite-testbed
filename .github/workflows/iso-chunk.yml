@@ -7,7 +7,55 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      
     steps:
       - uses: actions/checkout@v5
-      - name: Test
-        run: echo "Clean workflow test - ready for full implementation" 
+      - name: Build ISO
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
+          DATE=$(date +%Y%m%d)
+          bluebuild generate-iso --iso-name LemonKaijuOS-${DATE}.iso --output-dir ./output recipe recipes/recipe.yml
+      - name: Split into Chunks
+        run: |
+          DATE=$(date +%Y%m%d)
+          cd ./output
+          split -b 1900M -d LemonKaijuOS-${DATE}.iso LemonKaijuOS-${DATE}.part.
+          sha256sum LemonKaijuOS-${DATE}.iso > LemonKaijuOS-${DATE}.sha256
+          echo "Files created:"
+          ls -lh
+      - name: Create Release
+        run: |
+          DATE=$(date +%Y%m%d)
+          TIME=$(date +%H%M%S)
+          TAG="${DATE}-${TIME}"
+          echo "Creating release with tag: $TAG"
+          gh release create "$TAG" \
+            --title "LemonKaijuOS $TAG" \
+            --notes "LemonKaijuOS ISO with chunked download
+
+📥 Download Instructions:
+1. Download all part files
+2. Download checksum file  
+3. Use installer app to reassemble" \
+            --latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Files
+        run: |
+          DATE=$(date +%Y%m%d)
+          TIME=$(date +%H%M%S)
+          TAG="${DATE}-${TIME}"
+          cd ./output
+          echo "Uploading to release: $TAG"
+          for file in LemonKaijuOS-*.part.*; do
+            echo "Uploading chunk: $file"
+            gh release upload "$TAG" "$file"
+          done
+          echo "Uploading checksum"
+          gh release upload "$TAG" LemonKaijuOS-*.sha256
+          echo "Upload complete!"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
