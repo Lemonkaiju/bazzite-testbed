@@ -7,68 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-      
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Build ISO
-        run: |
-          curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
-          DATE=$(date +%Y%m%d)
-          bluebuild generate-iso --iso-name LemonKaijuOS-${DATE}.iso --output-dir ./output recipe recipes/recipe.yml
-
-      - name: Split ISO into Chunks
-        run: |
-          DATE=$(date +%Y%m%d)
-          cd ./output
-          
-          # Split ISO into 1.9GB chunks (under 2GB limit)
-          split -b 1900M -d LemonKaijuOS-${DATE}.iso LemonKaijuOS-${DATE}.part.
-          
-          # Create checksum file
-          sha256sum LemonKaijuOS-${DATE}.iso > LemonKaijuOS-${DATE}.sha256
-          
-          # List files
-          echo "Files created:"
-          ls -lh
-
-      - name: Create Release
-        run: |
-          DATE=$(date +%Y%m%d)
-          
-          # Create release
-          gh release create "${DATE}" \
-            --title "LemonKaijuOS ${DATE}" \
-            --notes "LemonKaijuOS ISO image for ${DATE}
-
-📥 Download Instructions:
-1. Download all part files (LemonkaijuOS-${DATE}.part.*)
-2. Download LemonKaijuOS-${DATE}.sha256
-3. Reassemble using the installer app
-
-The ISO is split into chunks due to GitHub's 2GB file size limit." \
-            --latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Chunks to Release
-        run: |
-          DATE=$(date +%Y%m%d)
-          cd ./output
-          
-          # Upload all part files
-          for file in LemonKaijuOS-${DATE}.part.*; do
-            echo "Uploading $file..."
-            gh release upload "${DATE}" "$file" --clobber
-          done
-          
-          # Upload checksum file
-          gh release upload "${DATE}" LemonKaijuOS-${DATE}.sha256 --clobber
-          
-          echo "All files uploaded!"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v5
+      - name: Test
+        run: echo "Workflow dispatch test - ready for chunked logic" 
