@@ -19,14 +19,13 @@ jobs:
         run: |
           # 1. Install BlueBuild CLI
           curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
-
           # 2. Generate ISO with date-based name
           DATE=$(date +%Y%m%d)
           bluebuild generate-iso \
             --iso-name LemonKaijuOS-${DATE}.iso \
             --output-dir ./output \
             recipe recipes/recipe.yml
-
+            
       - name: Upload ISO to gh-pages branch
         run: |
           DATE=$(date +%Y%m%d)
@@ -42,20 +41,18 @@ jobs:
           # Copy ISO and create index
           cp ./output/LemonKaijuOS-${DATE}.iso ./LemonKaijuOS.iso
           
-          # Create simple index.html
-          cat > index.html << 'EOF'
-<!DOCTYPE html>
-<html>
-<head>
-    <title>LemonKaijuOS Download</title>
-    <meta http-equiv="refresh" content="0; url='LemonKaijuOS.iso'">
-</head>
-<body>
-    <h1>LemonKaijuOS Download</h1>
-    <p>If you are not redirected, <a href="LemonKaijuOS.iso">click here to download</a>.</p>
-</body>
-</html>
-EOF
+          # Create simple index.html using echo
+          echo '<!DOCTYPE html>' > index.html
+          echo '<html>' >> index.html
+          echo '<head>' >> index.html
+          echo '    <title>LemonKaijuOS Download</title>' >> index.html
+          echo '    <meta http-equiv="refresh" content="0; url='LemonKaijuOS.iso'">' >> index.html
+          echo '</head>' >> index.html
+          echo '<body>' >> index.html
+          echo '    <h1>LemonKaijuOS Download</h1>' >> index.html
+          echo '    <p>If you are not redirected, <a href="LemonKaijuOS.iso">click here to download</a>.</p>' >> index.html
+          echo '</body>' >> index.html
+          echo '</html>' >> index.html
           
           # Commit and push
           git add .
@@ -70,7 +67,7 @@ EOF
             --title "LemonKaijuOS ${DATE}" \
             --notes "LemonKaijuOS ISO image for ${DATE}
 
-📥 **Download Link**: https://lemonkaiju.github.io/bazzite-testbed/
+📥 Download Link: https://lemonkaiju.github.io/bazzite-testbed/
 
 The ISO is hosted on GitHub Pages due to GitHub's 2GB release asset limit." \
             --latest
