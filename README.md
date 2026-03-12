@@ -17,12 +17,12 @@ A custom Bazzite-based Linux distribution that comes pre-loaded with games, crea
 - Spotify for music streaming
 - RustDesk for remote access
 
-### 🖥️ Tablet & 2-in-1 Optimizations
-- Screen flickering fixes (i915.enable_psr=0)
-- Deep sleep support (mem_sleep_default=deep)
-- Auto-rotation for tablets (iio-sensor-proxy)
+### 🖥️ Hardware Optimizations
+- Universal hardware detection and optimization
+- Automatic hardware-specific module loading
+- Sensor support for rotation and touch (when hardware detected)
 - Fingerprint login (fprintd)
-- Tablet mode with early-load modules
+- Hardware-specific optimizations for detected devices
 
 ### 🔒 Privacy & Security
 - Mullvad Browser pre-configured
