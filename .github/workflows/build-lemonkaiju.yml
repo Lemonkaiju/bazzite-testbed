@@ -32,44 +32,42 @@ jobs:
           # Create checksum file
           sha256sum LemonKaijuOS-${DATE}.iso > LemonKaijuOS-${DATE}.sha256
           
-          # Create reassembly script
-          cat > reassemble.sh << 'EOF'
-#!/bin/bash
-set -e
-
-echo "Reassembling LemonKaijuOS ISO..."
-
-# Find all part files
-parts=$(ls LemonKaijuOS-*.part.* 2>/dev/null | sort -V)
-
-if [ -z "$parts" ]; then
-    echo "No part files found!"
-    exit 1
-fi
-
-echo "Found parts: $parts"
-echo "Reassembling..."
-
-# Concatenate parts
-cat $parts > LemonKaijuOS.iso
-
-# Verify checksum
-if [ -f LemonKaijuOS.sha256 ]; then
-    echo "Verifying checksum..."
-    sha256sum -c LemonKaijuOS.sha256
-    if [ $? -eq 0 ]; then
-        echo "✅ Checksum verification passed!"
-        echo "🎉 LemonKaijuOS.iso ready for use!"
-    else
-        echo "❌ Checksum verification failed!"
-        exit 1
-    fi
-else
-    echo "⚠️  No checksum file found - skipping verification"
-fi
-
-echo "Done!"
-EOF
+          # Create reassembly script using echo
+          echo '#!/bin/bash' > reassemble.sh
+          echo 'set -e' >> reassemble.sh
+          echo '' >> reassemble.sh
+          echo 'echo "Reassembling LemonKaijuOS ISO..."' >> reassemble.sh
+          echo '' >> reassemble.sh
+          echo '# Find all part files' >> reassemble.sh
+          echo 'parts=$(ls LemonKaijuOS-*.part.* 2>/dev/null | sort -V)' >> reassemble.sh
+          echo '' >> reassemble.sh
+          echo 'if [ -z "$parts" ]; then' >> reassemble.sh
+          echo '    echo "No part files found!"' >> reassemble.sh
+          echo '    exit 1' >> reassemble.sh
+          echo 'fi' >> reassemble.sh
+          echo '' >> reassemble.sh
+          echo 'echo "Found parts: $parts"' >> reassemble.sh
+          echo 'echo "Reassembling..."' >> reassemble.sh
+          echo '' >> reassemble.sh
+          echo '# Concatenate parts' >> reassemble.sh
+          echo 'cat $parts > LemonKaijuOS.iso' >> reassemble.sh
+          echo '' >> reassemble.sh
+          echo '# Verify checksum' >> reassemble.sh
+          echo 'if [ -f LemonKaijuOS.sha256 ]; then' >> reassemble.sh
+          echo '    echo "Verifying checksum..."' >> reassemble.sh
+          echo '    sha256sum -c LemonKaijuOS.sha256' >> reassemble.sh
+          echo '    if [ $? -eq 0 ]; then' >> reassemble.sh
+          echo '        echo "Checksum verification passed!"' >> reassemble.sh
+          echo '        echo "LemonKaijuOS.iso ready for use!"' >> reassemble.sh
+          echo '    else' >> reassemble.sh
+          echo '        echo "Checksum verification failed!"' >> reassemble.sh
+          echo '        exit 1' >> reassemble.sh
+          echo '    fi' >> reassemble.sh
+          echo 'else' >> reassemble.sh
+          echo '    echo "No checksum file found - skipping verification"' >> reassemble.sh
+          echo 'fi' >> reassemble.sh
+          echo '' >> reassemble.sh
+          echo 'echo "Done!"' >> reassemble.sh
           
           chmod +x reassemble.sh
           
@@ -85,8 +83,8 @@ EOF
             --title "LemonKaijuOS ${DATE}" \
             --notes "LemonKaijuOS ISO image for ${DATE}
 
-📥 **Download Instructions**:
-1. Download all part files (LemonKaijuOS-${DATE}.part.*)
+📥 Download Instructions:
+1. Download all part files (LemonkaijuOS-${DATE}.part.*)
 2. Download reassemble.sh and LemonKaijuOS-${DATE}.sha256
 3. Run: chmod +x reassemble.sh && ./reassemble.sh
 
@@ -94,7 +92,7 @@ The ISO is split into chunks due to GitHub's 2GB file size limit.
 
 Hardware Detection:
 - Dell Latitude 5320/7320: Tablet mode and rotation support
-- Intel systems: WiFi and Bluetooth optimization  
+- Intel systems: WiFi and Bluetooth optimization
 - Universal: Sensor proxy, fingerprint, gaming optimizations" \
             --latest
         env:
