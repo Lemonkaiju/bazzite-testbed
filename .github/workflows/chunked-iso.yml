@@ -25,4 +25,21 @@ jobs:
           split -b 1900M -d LemonKaijuOS-${DATE}.iso LemonKaijuOS-${DATE}.part.
           sha256sum LemonKaijuOS-${DATE}.iso > LemonKaijuOS-${DATE}.sha256
           echo "Files created:"
-          ls -lh 
+          ls -lh
+      - name: Create Release
+        run: |
+          DATE=$(date +%Y%m%d)
+          TIME=$(date +%H%M%S)
+          TAG="${DATE}-${TIME}"
+          echo "Creating release with tag: $TAG"
+          gh release create "$TAG" \
+            --title "LemonKaijuOS $TAG" \
+            --notes "LemonKaijuOS ISO with chunked download
+
+📥 Download Instructions:
+1. Download all part files
+2. Download checksum file  
+3. Use installer app to reassemble" \
+            --latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
