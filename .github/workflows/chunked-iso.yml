@@ -1,0 +1,35 @@
+name: Chunked ISO Build
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build and Chunk ISO
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
+          DATE=$(date +%Y%m%d)
+          bluebuild generate-iso --iso-name LemonKaijuOS-${DATE}.iso --output-dir ./output recipe recipes/recipe.yml
+          cd ./output
+          split -b 1900M -d LemonKaijuOS-${DATE}.iso LemonKaijuOS-${DATE}.part.
+          sha256sum LemonKaijuOS-${DATE}.iso > LemonKaijuOS-${DATE}.sha256
+          ls -lh
+      - name: Create Release and Upload
+        run: |
+          DATE=$(date +%Y%m%d)
+          cd ./output
+          gh release create "${DATE}" --title "LemonKaijuOS ${DATE}" --notes "LemonKaijuOS ISO with chunked download" --latest
+          for file in LemonKaijuOS-${DATE}.part.*; do
+            gh release upload "${DATE}" "$file"
+          done
+          gh release upload "${DATE}" LemonKaijuOS-${DATE}.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
