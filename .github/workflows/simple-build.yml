@@ -1,0 +1,15 @@
+name: Simple ISO Build
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build ISO Only
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
+          DATE=$(date +%Y%m%d)
+          bluebuild generate-iso --iso-name LemonKaijuOS-${DATE}.iso --output-dir ./output recipe recipes/recipe.yml
+          ls -la ./output/ || echo "No output" 
