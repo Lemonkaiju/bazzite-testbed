@@ -21,22 +21,100 @@ jobs:
           DATE=$(date +%Y%m%d)
           bluebuild generate-iso --iso-name LemonKaijuOS-${DATE}.iso --output-dir ./output recipe recipes/recipe.yml
 
-      - name: Upload to GitHub Pages
+      - name: Split ISO into Chunks
         run: |
           DATE=$(date +%Y%m%d)
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git checkout --orphan gh-pages 2>/dev/null || git checkout gh-pages
-          git rm -rf . 2>/dev/null || true
-          cp ./output/LemonKaijuOS-${DATE}.iso ./LemonKaijuOS.iso
-          echo '<!DOCTYPE html><html><head><title>LemonKaijuOS Download</title><meta http-equiv="refresh" content="0; url=LemonKaijuOS.iso"></head><body><h1>LemonKaijuOS Download</h1><p><a href="LemonKaijuOS.iso">Click here to download</a></p></body></html>' > index.html
-          git add .
-          git commit -m "Deploy LemonKaijuOS-${DATE}"
-          git push origin gh-pages --force
+          cd ./output
+          
+          # Split ISO into 1.9GB chunks (under 2GB limit)
+          split -b 1900M -d LemonKaijuOS-${DATE}.iso LemonKaijuOS-${DATE}.part.
+          
+          # Create checksum file
+          sha256sum LemonKaijuOS-${DATE}.iso > LemonKaijuOS-${DATE}.sha256
+          
+          # Create reassembly script
+          cat > reassemble.sh << 'EOF'
+#!/bin/bash
+set -e
 
-      - name: Create Release
+echo "Reassembling LemonKaijuOS ISO..."
+
+# Find all part files
+parts=$(ls LemonKaijuOS-*.part.* 2>/dev/null | sort -V)
+
+if [ -z "$parts" ]; then
+    echo "No part files found!"
+    exit 1
+fi
+
+echo "Found parts: $parts"
+echo "Reassembling..."
+
+# Concatenate parts
+cat $parts > LemonKaijuOS.iso
+
+# Verify checksum
+if [ -f LemonKaijuOS.sha256 ]; then
+    echo "Verifying checksum..."
+    sha256sum -c LemonKaijuOS.sha256
+    if [ $? -eq 0 ]; then
+        echo "✅ Checksum verification passed!"
+        echo "🎉 LemonKaijuOS.iso ready for use!"
+    else
+        echo "❌ Checksum verification failed!"
+        exit 1
+    fi
+else
+    echo "⚠️  No checksum file found - skipping verification"
+fi
+
+echo "Done!"
+EOF
+          
+          chmod +x reassemble.sh
+          
+          # List files
+          ls -lh
+
+      - name: Create Release with Chunks
         run: |
           DATE=$(date +%Y%m%d)
-          gh release create "${DATE}" --title "LemonKaijuOS ${DATE}" --notes "LemonKaijuOS ISO image for ${DATE}. Download: https://lemonkaiju.github.io/bazzite-testbed/" --latest
+          
+          # Create release
+          gh release create "${DATE}" \
+            --title "LemonKaijuOS ${DATE}" \
+            --notes "LemonKaijuOS ISO image for ${DATE}
+
+📥 **Download Instructions**:
+1. Download all part files (LemonKaijuOS-${DATE}.part.*)
+2. Download reassemble.sh and LemonKaijuOS-${DATE}.sha256
+3. Run: chmod +x reassemble.sh && ./reassemble.sh
+
+The ISO is split into chunks due to GitHub's 2GB file size limit.
+
+Hardware Detection:
+- Dell Latitude 5320/7320: Tablet mode and rotation support
+- Intel systems: WiFi and Bluetooth optimization  
+- Universal: Sensor proxy, fingerprint, gaming optimizations" \
+            --latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload All Files to Release
+        run: |
+          DATE=$(date +%Y%m%d)
+          cd ./output
+          
+          # Upload all part files
+          for file in LemonKaijuOS-${DATE}.part.*; do
+            echo "Uploading $file..."
+            gh release upload "${DATE}" "$file" --clobber
+          done
+          
+          # Upload other files
+          gh release upload "${DATE}" reassemble.sh --clobber
+          gh release upload "${DATE}" LemonKaijuOS-${DATE}.sha256 --clobber
+          
+          echo "All files uploaded!"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
