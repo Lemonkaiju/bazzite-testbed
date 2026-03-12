@@ -1,7 +1,7 @@
 ---
-# Custom Bazzite build for Dell Latitude 5320/7320 Tablet & 2-in-1
+# Universal Bazzite build for gaming, productivity, and tablets
 name: bazzite-testbed
-description: Tablet-optimized Bazzite with developer tools and light gaming support.
+description: Hardware-optimized Bazzite with gaming, productivity, and creative tools. Supports tablets, laptops, and desktops with automatic hardware detection.
 
 base-image: ghcr.io/ublue-os/bazzite
 image-version: latest
@@ -56,4 +56,4 @@ modules:
 
   - type: script
     scripts:
-      - dell-tuning.sh
+      - hardware-tuning.sh
