@@ -43,19 +43,17 @@ jobs:
           cp ./output/LemonKaijuOS-${DATE}.iso ./LemonKaijuOS.iso
           
           # Create simple index.html
-          cat > index.html << 'EOF'
-<!DOCTYPE html>
-<html>
-<head>
-    <title>LemonKaijuOS Download</title>
-    <meta http-equiv="refresh" content="0; url='LemonKaijuOS.iso'">
-</head>
-<body>
-    <h1>LemonKaijuOS Download</h1>
-    <p>If you are not redirected, <a href="LemonKaijuOS.iso">click here to download</a>.</p>
-</body>
-</html>
-EOF
+          echo '<!DOCTYPE html>
+          <html>
+          <head>
+              <title>LemonKaijuOS Download</title>
+              <meta http-equiv="refresh" content="0; url='\''LemonKaijuOS.iso'\''">
+          </head>
+          <body>
+              <h1>LemonKaijuOS Download</h1>
+              <p>If you are not redirected, <a href="LemonKaijuOS.iso">click here to download</a>.</p>
+          </body>
+          </html>' > index.html
           
           # Commit and push
           git add .
