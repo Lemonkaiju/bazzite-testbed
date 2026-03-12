@@ -18,7 +18,11 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
           DATE=$(date +%Y%m%d)
           bluebuild generate-iso --iso-name LemonKaijuOS-${DATE}.iso --output-dir ./output recipe recipes/recipe.yml
-      - name: List Files
+      - name: Split into Chunks
         run: |
-          echo "Files in output:"
-          ls -la ./output/ || echo "No output directory" 
+          DATE=$(date +%Y%m%d)
+          cd ./output
+          split -b 1900M -d LemonKaijuOS-${DATE}.iso LemonKaijuOS-${DATE}.part.
+          sha256sum LemonKaijuOS-${DATE}.iso > LemonKaijuOS-${DATE}.sha256
+          echo "Files created:"
+          ls -lh 
