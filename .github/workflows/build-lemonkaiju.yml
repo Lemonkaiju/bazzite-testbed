@@ -1,0 +1,78 @@
+name: Build LemonKaijuOS ISO
+on:
+  workflow_dispatch:
+
+jobs:
+  build-iso:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Build ISO
+        run: |
+          # 1. Install BlueBuild CLI
+          curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
+
+          # 2. Generate ISO with date-based name
+          DATE=$(date +%Y%m%d)
+          bluebuild generate-iso \
+            --iso-name LemonKaijuOS-${DATE}.iso \
+            --output-dir ./output \
+            recipe recipes/recipe.yml
+
+      - name: Upload ISO to gh-pages branch
+        run: |
+          DATE=$(date +%Y%m%d)
+          
+          # Configure git
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          # Create/clean gh-pages branch
+          git checkout --orphan gh-pages 2>/dev/null || git checkout gh-pages
+          git rm -rf . 2>/dev/null || true
+          
+          # Copy ISO and create index
+          cp ./output/LemonKaijuOS-${DATE}.iso ./LemonKaijuOS.iso
+          
+          # Create simple index.html
+          cat > index.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LemonKaijuOS Download</title>
+    <meta http-equiv="refresh" content="0; url='LemonKaijuOS.iso'">
+</head>
+<body>
+    <h1>LemonKaijuOS Download</h1>
+    <p>If you are not redirected, <a href="LemonKaijuOS.iso">click here to download</a>.</p>
+</body>
+</html>
+EOF
+          
+          # Commit and push
+          git add .
+          git commit -m "Deploy LemonKaijuOS-${DATE}"
+          git push origin gh-pages --force
+
+      - name: Create Release
+        run: |
+          DATE=$(date +%Y%m%d)
+          
+          gh release create "${DATE}" \
+            --title "LemonKaijuOS ${DATE}" \
+            --notes "LemonKaijuOS ISO image for ${DATE}
+
+📥 **Download Link**: https://lemonkaiju.github.io/bazzite-testbed/
+
+The ISO is hosted on GitHub Pages due to GitHub's 2GB release asset limit." \
+            --latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
