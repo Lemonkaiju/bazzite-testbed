@@ -17,6 +17,9 @@ jobs:
         run: |
           curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
           DATE=$(date +%Y%m%d)
+          TIME=$(date +%H%M%S)
+          TAG="${DATE}-${TIME}"
+          echo "TAG=${TAG}" >> $GITHUB_ENV
           bluebuild generate-iso --iso-name LemonKaijuOS-${DATE}.iso --output-dir ./output recipe recipes/recipe.yml
           cd ./output
           split -b 1900M -d LemonKaijuOS-${DATE}.iso LemonKaijuOS-${DATE}.part.
@@ -24,12 +27,22 @@ jobs:
           ls -lh
       - name: Create Release and Upload
         run: |
-          DATE=$(date +%Y%m%d)
           cd ./output
-          gh release create "${DATE}" --title "LemonKaijuOS ${DATE}" --notes "LemonKaijuOS ISO with chunked download" --latest
-          for file in LemonKaijuOS-${DATE}.part.*; do
-            gh release upload "${DATE}" "$file"
+          echo "Creating release with tag: ${{ env.TAG }}"
+          gh release create "${{ env.TAG }}" --title "LemonKaijuOS ${{ env.TAG }}" --notes "LemonKaijuOS ISO with chunked download
+
+📥 Download Instructions:
+1. Download all part files
+2. Download checksum file  
+3. Use installer app to reassemble" --latest
+          for file in LemonKaijuOS-*.part.*; do
+            echo "Uploading $file..."
+            gh release upload "${{ env.TAG }}" "$file"
           done
-          gh release upload "${DATE}" LemonKaijuOS-${DATE}.sha256
+          for file in LemonKaijuOS-*.sha256; do
+            echo "Uploading $file..."
+            gh release upload "${{ env.TAG }}" "$file"
+          done
+          echo "Upload complete!"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
