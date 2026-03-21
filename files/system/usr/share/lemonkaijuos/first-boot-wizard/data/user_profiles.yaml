@@ -1,0 +1,89 @@
+---
+# LemonKaijuOS User Profiles
+# Pre-configured app selections for common use cases
+
+profiles:
+  office_productivity:
+    name: "Office & Productivity"
+    description: "For work, school, and everyday tasks"
+    icon: "💼"
+    size: 24500
+    categories:
+      - communication
+      - remote_desktop
+    apps:
+      - org.mozilla.Thunderbird
+      - org.remmina.Remmina
+      - com.github.xournalpp.xournalpp
+
+  creative_professional:
+    name: "Creative Professional"
+    description: "For designers, photographers, video editors"
+    icon: "🎨"
+    size: 28000
+    categories:
+      - photo_editing
+      - digital_art
+      - video_editing
+      - audio_production
+      - 3d_modeling
+    apps:
+      - org.gimp.GIMP
+      - org.darktable.Darktable
+      - org.kde.krita
+      - org.inkscape.Inkscape
+      - org.kde.kdenlive
+      - com.obsproject.Studio
+      - org.audacityteam.Audacity
+      - io.lmms.LMMS
+      - org.blender.Blender
+
+  student_learning:
+    name: "Student & Learning"
+    description: "For students and families with kids"
+    icon: "📚"
+    size: 25000
+    categories:
+      - education
+      - note_taking
+    apps:
+      - org.tuxpaint.Tuxpaint
+      - org.kde.gcompris
+      - org.kde.kalgebra
+      - org.kde.kbruch
+      - net.sourceforge.tuxtype
+      - com.github.xournalpp.xournalpp
+      - org.gnome.Shotwell
+      - org.audacityteam.Audacity
+
+  developer_tech:
+    name: "Developer & Tech"
+    description: "For programmers and game developers"
+    icon: "💻"
+    size: 25000
+    categories:
+      - development
+      - note_taking
+    apps:
+      - org.godotengine.Godot
+      - io.github.shiftey.Desktop
+      - com.github.xournalpp.xournalpp
+      - md.obsidian.Obsidian
+
+  family_home:
+    name: "Family Home"
+    description: "For families: photos, games, kids' apps"
+    icon: "🏠"
+    size: 26000
+    categories:
+      - education
+      - games_casual
+      - communication
+    apps:
+      - org.gnome.Shotwell
+      - org.tuxpaint.Tuxpaint
+      - org.kde.gcompris
+      - io.github.shlomif.PySolFC
+      - com.github.Anuken.Mindustry
+      - org.luanti.luanti
+      - com.spotify.Client

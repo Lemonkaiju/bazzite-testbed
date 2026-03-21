@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="step-content">
+    <h2>👥 User Accounts</h2>
+    <p class="step-description">Who will use this computer? Create accounts for each person.</p>
+    
+    <div class="user-list" id="userList">
+        <!-- Primary user (required) -->
+        <div class="user-card primary-user">
+            <h3>👤 Primary User (You)</h3>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="primaryName" placeholder="John Smith" required>
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="primaryUsername" placeholder="john" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="primaryPassword" required>
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="primaryPasswordConfirm" required>
+            </div>
+            <div class="info-box">
+                <strong>Role: Administrator</strong>
+                <p>✓ Can install apps and change settings<br>
+                   ✓ Can manage other user accounts<br>
+                   ✓ Full system access</p>
+            </div>
+        </div>
+        
+        <!-- Additional users will be added here -->
+    </div>
+    
+    <button class="btn btn-secondary" onclick="addUser()">
+        + Add Another User
+    </button>
+    
+    <div class="help-text">
+        <p>ℹ️ You can add more users later from Settings</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="button-group">
+    <button class="btn btn-secondary" onclick="window.location.href='/'">
+        ← Back
+    </button>
+    <button class="btn btn-primary" onclick="saveUsers()">
+        Continue →
+    </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let userCount = 0;
+
+function addUser() {
+    userCount++;
+    const userList = document.getElementById('userList');
+    const userCard = document.createElement('div');
+    userCard.className = 'user-card';
+    userCard.id = `user-${userCount}`;
+    userCard.innerHTML = `
+        <div class="user-card-header">
+            <h3>👤 Family Member</h3>
+            <button class="btn-remove" onclick="removeUser(${userCount})">Remove</button>
+        </div>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="name-${userCount}" placeholder="Jane Smith">
+        </div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="username-${userCount}" placeholder="jane">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password-${userCount}">
+        </div>
+        <div class="form-group">
+            <label>Role</label>
+            <select id="role-${userCount}">
+                <option value="family">Family Member - Can install apps, change personal settings</option>
+                <option value="child">Child - Restricted access, parental controls</option>
+                <option value="guest">Guest - Temporary access, no file saving</option>
+                <option value="administrator">Administrator - Full system control</option>
+            </select>
+        </div>
+    `;
+    userList.appendChild(userCard);
+}
+
+function removeUser(id) {
+    const userCard = document.getElementById(`user-${id}`);
+    userCard.remove();
+}
+
+function saveUsers() {
+    const users = [];
+    
+    // Primary user
+    const primaryUser = {
+        name: document.getElementById('primaryName').value,
+        username: document.getElementById('primaryUsername').value,
+        password: document.getElementById('primaryPassword').value,
+        role: 'administrator'
+    };
+    
+    // Validate primary user
+    if (!primaryUser.name || !primaryUser.username || !primaryUser.password) {
+        alert('Please fill in all fields for the primary user');
+        return;
+    }
+    
+    const passwordConfirm = document.getElementById('primaryPasswordConfirm').value;
+    if (primaryUser.password !== passwordConfirm) {
+        alert('Passwords do not match');
+        return;
+    }
+    
+    users.push(primaryUser);
+    
+    // Additional users
+    for (let i = 1; i <= userCount; i++) {
+        const nameEl = document.getElementById(`name-${i}`);
+        if (nameEl && nameEl.value) {
+            users.push({
+                name: nameEl.value,
+                username: document.getElementById(`username-${i}`).value,
+                password: document.getElementById(`password-${i}`).value,
+                role: document.getElementById(`role-${i}`).value
+            });
+        }
+    }
+    
+    // Save to backend
+    fetch('/api/users', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({users: users})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/step/2';
+        }
+    });
+}
+</script>
+{% endblock %}

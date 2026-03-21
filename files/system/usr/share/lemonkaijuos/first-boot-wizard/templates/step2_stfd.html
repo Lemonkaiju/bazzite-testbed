@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="step-content">
+    <h2>🏠 Home Network Setup</h2>
+    <p class="step-description">Do you have a STFD home network setup?</p>
+    
+    <div class="choice-cards">
+        <div class="choice-card" id="stfdYes" onclick="selectSTFD(true)">
+            <div class="choice-icon">✓</div>
+            <h3>Yes, connect to my home network</h3>
+            <p>Enable AI-assisted management and monitoring</p>
+        </div>
+        
+        <div class="choice-card active" id="stfdNo" onclick="selectSTFD(false)">
+            <div class="choice-icon">○</div>
+            <h3>No, use this computer standalone</h3>
+            <p>Skip network integration (you can add this later)</p>
+        </div>
+    </div>
+    
+    <div class="info-panel" id="stfdInfo" style="display: none;">
+        <h3>What is STFD?</h3>
+        <p><strong>STFD (Shut The Front Door)</strong> is a privacy-focused home network system that:</p>
+        <ul>
+            <li>🛡️ Blocks ads and trackers network-wide</li>
+            <li>🔐 Provides secure remote access</li>
+            <li>🤖 Manages family devices with AI assistance</li>
+            <li>🏠 Keeps your data private (no cloud required)</li>
+        </ul>
+        <p>If you don't have STFD set up, choose "No" and this computer will work perfectly on its own.</p>
+    </div>
+    
+    <div class="stfd-credentials" id="stfdCredentials" style="display: none;">
+        <h3>🔐 STFD Network Credentials</h3>
+        <p>Enter your STFD admin credentials:</p>
+        
+        <div class="form-group">
+            <label>Network Name</label>
+            <input type="text" id="networkName" placeholder="The name you gave your STFD setup">
+        </div>
+        
+        <div class="form-group">
+            <label>Admin Username</label>
+            <input type="text" id="adminUsername">
+        </div>
+        
+        <div class="form-group">
+            <label>Admin Password</label>
+            <input type="password" id="adminPassword">
+        </div>
+        
+        <button class="btn btn-secondary" onclick="testConnection()">Test Connection</button>
+        <div id="connectionStatus"></div>
+        
+        <div class="info-box">
+            <h4>What will this enable?</h4>
+            <ul>
+                <li>✅ AI-assisted device management - Your STFD admin can help manage this PC remotely</li>
+                <li>✅ Automatic security updates - AI monitors and applies security patches</li>
+                <li>✅ Family device coordination - Share settings across family devices</li>
+                <li>✅ Secure remote access (SSH) - Admin can troubleshoot remotely if needed</li>
+            </ul>
+            <p><strong>⚠️ Important:</strong> Only the administrator account you created will have remote access permissions.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="button-group">
+    <button class="btn btn-secondary" onclick="window.location.href='/step/1'">
+        ← Back
+    </button>
+    <button class="btn btn-primary" onclick="saveSTFD()">
+        Continue →
+    </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let stfdEnabled = false;
+
+function selectSTFD(enabled) {
+    stfdEnabled = enabled;
+    
+    document.getElementById('stfdYes').classList.toggle('active', enabled);
+    document.getElementById('stfdNo').classList.toggle('active', !enabled);
+    
+    document.getElementById('stfdInfo').style.display = enabled ? 'none' : 'block';
+    document.getElementById('stfdCredentials').style.display = enabled ? 'block' : 'none';
+}
+
+function testConnection() {
+    const status = document.getElementById('connectionStatus');
+    status.innerHTML = '<p class="loading">Testing connection...</p>';
+    
+    // Simulate connection test
+    setTimeout(() => {
+        status.innerHTML = '<p class="success">✓ Connection successful!</p>';
+    }, 1500);
+}
+
+function saveSTFD() {
+    const data = {
+        enabled: stfdEnabled,
+        credentials: {}
+    };
+    
+    if (stfdEnabled) {
+        data.credentials = {
+            network_name: document.getElementById('networkName').value,
+            admin_username: document.getElementById('adminUsername').value,
+            admin_password: document.getElementById('adminPassword').value
+        };
+        
+        if (!data.credentials.network_name || !data.credentials.admin_username || !data.credentials.admin_password) {
+            alert('Please fill in all STFD credentials');
+            return;
+        }
+    }
+    
+    fetch('/api/stfd', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // If STFD enabled, go to AI permissions, otherwise skip to app selection
+            window.location.href = stfdEnabled ? '/step/3' : '/step/4';
+        }
+    });
+}
+</script>
+{% endblock %}

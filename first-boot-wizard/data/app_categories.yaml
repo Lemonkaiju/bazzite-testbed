@@ -1,0 +1,300 @@
+---
+# LemonKaijuOS App Categories
+# Used by first-boot wizard for app selection
+
+categories:
+  photo_editing:
+    name: "Photo Editing & Management"
+    icon: "📸"
+    description: "For photographers, photo enthusiasts, family photo organization"
+    apps:
+      - id: org.gimp.GIMP
+        name: GIMP
+        size: 800
+        description: "Advanced photo editing"
+        tooltip: "Like Photoshop. Edit photos, remove backgrounds, create graphics"
+        difficulty: "Medium"
+        best_for: "Serious photo editing, graphic design"
+      - id: org.darktable.Darktable
+        name: Darktable
+        size: 300
+        description: "RAW photo processing"
+        tooltip: "Like Lightroom. Organize & edit RAW photos from cameras"
+        difficulty: "Medium"
+        best_for: "Photographers with DSLR/mirrorless cameras"
+      - id: org.gnome.Shotwell
+        name: Shotwell
+        size: 50
+        description: "Simple photo organizer"
+        tooltip: "Like Windows Photos. Organize family photos, basic edits"
+        difficulty: "Easy"
+        best_for: "Family photo management"
+
+  digital_art:
+    name: "Digital Art & Illustration"
+    icon: "🎨"
+    description: "For digital artists, illustrators, designers"
+    apps:
+      - id: org.kde.krita
+        name: Krita
+        size: 400
+        description: "Digital painting"
+        tooltip: "Draw & paint digitally. Great for tablets and stylus"
+        difficulty: "Easy-Medium"
+        best_for: "Artists, illustrators, digital painters"
+      - id: org.inkscape.Inkscape
+        name: Inkscape
+        size: 300
+        description: "Vector graphics"
+        tooltip: "Like Illustrator. Design logos, icons, scalable graphics"
+        difficulty: "Medium"
+        best_for: "Logo design, illustrations, print design"
+      - id: org.mypaint.MyPaint
+        name: MyPaint
+        size: 100
+        description: "Simple painting app"
+        tooltip: "Lightweight painting for quick sketches"
+        difficulty: "Easy"
+        best_for: "Casual digital painting"
+
+  video_editing:
+    name: "Video Editing & Production"
+    icon: "🎬"
+    description: "For video creators, YouTubers, family video projects"
+    apps:
+      - id: org.kde.kdenlive
+        name: Kdenlive
+        size: 400
+        description: "Professional video editing"
+        tooltip: "Like Premiere Pro. Edit videos for YouTube, projects, work"
+        difficulty: "Medium"
+        best_for: "YouTubers, video creators, filmmakers"
+      - id: org.shotcut.Shotcut
+        name: Shotcut
+        size: 200
+        description: "Simple video editor"
+        tooltip: "Like Windows Movie Maker. Easy video editing for beginners"
+        difficulty: "Easy"
+        best_for: "Beginners, simple video projects"
+      - id: com.obsproject.Studio
+        name: OBS Studio
+        size: 150
+        description: "Screen recording & streaming"
+        tooltip: "Record tutorials, stream games, make screencasts"
+        difficulty: "Easy-Medium"
+        best_for: "Streamers, tutorial creators, educators"
+
+  audio_production:
+    name: "Audio Production & Music"
+    icon: "🎵"
+    description: "For musicians, podcasters, audio engineers"
+    apps:
+      - id: org.audacityteam.Audacity
+        name: Audacity
+        size: 150
+        description: "Audio editing"
+        tooltip: "Record podcasts, edit audio, clean up recordings"
+        difficulty: "Easy"
+        best_for: "Podcasters, voice recording, audio cleanup"
+      - id: io.lmms.LMMS
+        name: LMMS
+        size: 200
+        description: "Music production"
+        tooltip: "Like FL Studio. Make beats, electronic music, compose"
+        difficulty: "Medium"
+        best_for: "Music producers, beat makers, hobbyist musicians"
+      - id: org.ardour.Ardour
+        name: Ardour
+        size: 250
+        description: "Professional DAW"
+        tooltip: "Like Pro Tools. Record live instruments, advanced mixing"
+        difficulty: "Hard"
+        best_for: "Professional musicians, audio engineers"
+
+  3d_modeling:
+    name: "3D Modeling & Animation"
+    icon: "🎭"
+    description: "For 3D artists, game developers, animators"
+    apps:
+      - id: org.blender.Blender
+        name: Blender
+        size: 700
+        description: "3D creation suite"
+        tooltip: "Industry standard. 3D models, animation, VFX. Completely free"
+        difficulty: "Hard"
+        best_for: "3D artists, game developers, animators, VFX artists"
+
+  note_taking:
+    name: "Note-Taking & Annotation"
+    icon: "📝"
+    description: "For students, teachers, digital note-takers"
+    apps:
+      - id: com.github.xournalpp.xournalpp
+        name: Xournal++
+        size: 50
+        description: "PDF annotation & handwritten notes"
+        tooltip: "Annotate PDFs, take handwritten notes with stylus"
+        difficulty: "Easy"
+        best_for: "Students, teachers, PDF annotation"
+      - id: md.obsidian.Obsidian
+        name: Obsidian
+        size: 150
+        description: "Markdown note-taking"
+        tooltip: "Build a knowledge base with linked notes"
+        difficulty: "Medium"
+        best_for: "Knowledge management, research, writing"
+
+  development:
+    name: "Software Development"
+    icon: "💻"
+    description: "For programmers, game developers"
+    apps:
+      - id: org.godotengine.Godot
+        name: Godot Engine
+        size: 250
+        description: "Game development"
+        tooltip: "Make 2D/3D games. Like Unity but free, no royalties"
+        difficulty: "Medium"
+        best_for: "Game developers, hobbyist game makers"
+      - id: io.github.shiftey.Desktop
+        name: GitHub Desktop
+        size: 200
+        description: "Version control"
+        tooltip: "Manage code projects with Git"
+        difficulty: "Easy-Medium"
+        best_for: "Programmers, developers, students learning to code"
+
+  education:
+    name: "Education & Kids"
+    icon: "📚"
+    description: "For families with kids, homeschooling"
+    apps:
+      - id: org.tuxpaint.Tuxpaint
+        name: Tux Paint
+        size: 50
+        description: "Drawing for kids"
+        tooltip: "Like Kid Pix. Drawing app for ages 3-12"
+        difficulty: "Very Easy"
+        best_for: "Young children, creative play"
+      - id: org.kde.gcompris
+        name: GCompris
+        size: 200
+        description: "Educational activities"
+        tooltip: "Educational games for ages 2-10"
+        difficulty: "Very Easy"
+        best_for: "Early learning, homeschooling"
+      - id: org.kde.kalgebra
+        name: KAlgebra
+        size: 30
+        description: "Math graphing calculator"
+        tooltip: "Graph equations, solve math problems"
+        difficulty: "Easy"
+        best_for: "Middle school, high school, college students"
+      - id: org.kde.kbruch
+        name: KBruch
+        size: 20
+        description: "Fraction practice"
+        tooltip: "Learn and practice fractions"
+        difficulty: "Easy"
+        best_for: "Elementary and middle school students"
+      - id: net.sourceforge.tuxtype
+        name: Tux Type
+        size: 30
+        description: "Typing tutor"
+        tooltip: "Learn to type with fun games"
+        difficulty: "Easy"
+        best_for: "Kids learning to type"
+
+  games_casual:
+    name: "Casual Games"
+    icon: "🎮"
+    description: "Small, family-friendly games"
+    apps:
+      - id: io.github.shlomif.PySolFC
+        name: PySolFC
+        size: 50
+        description: "1000+ solitaire games"
+        tooltip: "Klondike, Spider, FreeCell, and 1000+ more. No ads!"
+        difficulty: "Easy"
+        best_for: "Card game fans, casual gaming"
+      - id: com.github.Anuken.Mindustry
+        name: Mindustry
+        size: 150
+        description: "Tower defense/factory game"
+        tooltip: "Build factories and defend against waves"
+        difficulty: "Medium"
+        best_for: "Strategy game fans"
+      - id: org.luanti.luanti
+        name: Minetest
+        size: 100
+        description: "Minecraft-like sandbox"
+        tooltip: "Like Minecraft. Build, explore, create"
+        difficulty: "Easy"
+        best_for: "Sandbox game fans, kids"
+
+  games_strategy:
+    name: "Strategy Games (Large)"
+    icon: "🎯"
+    description: "Large strategy and RPG games"
+    apps:
+      - id: com.play0ad.zeroad
+        name: 0 A.D.
+        size: 3500
+        description: "Historical RTS"
+        tooltip: "Build civilizations, command armies. Like Age of Empires"
+        difficulty: "Medium"
+        best_for: "RTS fans, history enthusiasts"
+      - id: info.beyondallreason.bar
+        name: Beyond All Reason
+        size: 2000
+        description: "Sci-fi RTS"
+        tooltip: "Large-scale sci-fi strategy battles"
+        difficulty: "Hard"
+        best_for: "Hardcore RTS fans"
+      - id: net.veloren.veloren
+        name: Veloren
+        size: 1500
+        description: "RPG adventure"
+        tooltip: "Open-world RPG with exploration and combat"
+        difficulty: "Medium"
+        best_for: "RPG fans, adventure game fans"
+
+  communication:
+    name: "Communication & Media"
+    icon: "📱"
+    description: "Email, chat, music streaming"
+    apps:
+      - id: org.mozilla.Thunderbird
+        name: Thunderbird
+        size: 250
+        description: "Email client"
+        tooltip: "Manage email accounts, calendar, contacts"
+        difficulty: "Easy"
+        best_for: "Email management"
+      - id: com.spotify.Client
+        name: Spotify
+        size: 250
+        description: "Music streaming"
+        tooltip: "Stream millions of songs (requires account)"
+        difficulty: "Easy"
+        best_for: "Music listening"
+      - id: com.discordapp.Discord
+        name: Discord
+        size: 150
+        description: "Voice & text chat"
+        tooltip: "Chat with friends, voice calls, communities"
+        difficulty: "Easy"
+        best_for: "Gaming communities, group chat"
+
+  remote_desktop:
+    name: "Remote Desktop"
+    icon: "🖥️"
+    description: "Remote access to other computers"
+    apps:
+      - id: com.rustdesk.RustDesk
+        name: RustDesk
+        size: 50
+        description: "Remote support"
+        tooltip: "Like TeamViewer. Help family/friends remotely"
+        difficulty: "Easy"
+        best_for: "Personal remote support"

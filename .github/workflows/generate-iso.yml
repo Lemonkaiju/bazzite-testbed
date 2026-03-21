@@ -1,32 +1,43 @@
 name: Generate ISO
 on:
-  workflow_dispatch: # Allows you to manually trigger it if you ever need a fresh USB
+  workflow_dispatch: # trigger manually, or automatically after a successful image build
+  workflow_run:
+    workflows: ["bluebuild"]
+    types: [completed]
+    branches: [main]
 
 jobs:
   build-iso:
     runs-on: ubuntu-latest
+    # Manual trigger always runs; workflow_run trigger only runs on success
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: read
       packages: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Build ISO
-        run: |
-          # 1. Install BlueBuild CLI
-          curl -fsSL https://raw.githubusercontent.com/blue-build/cli/main/install.sh | bash
-          
-          # 2. Generate ISO 
-          bluebuild generate-iso \
-            --iso-name bazzite-latitude.iso \
-            --output-dir ./output \
-            recipe recipes/recipe.yml
+        uses: jasonn3/build-container-installer@v1
+        id: build
+        with:
+          arch: x86_64
+          image_name: lemonkaijuos
+          image_repo: ghcr.io/lemonkaiju
+          image_tag: latest
+          version: 43          # Fedora base version (matches Bazzite stable)
+          variant: Kinoite     # KDE variant matches Bazzite
+          iso_name: lemonkaijuos.iso
+          enrollment_password: ""  # leave empty to skip secure-boot enrollment
+          web_ui: false
+          kickstart_file: kickstart/lemonkaijuos.ks
 
-      - name: Upload ISO Artifact
+      - name: Upload ISO artifact
         uses: actions/upload-artifact@v4
         with:
-          name: bazzite-latitude-iso
-          path: ./output/*.iso
+          name: lemonkaijuos-iso
+          path: ${{ steps.build.outputs.iso_path }}/${{ steps.build.outputs.iso_name }}
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 7

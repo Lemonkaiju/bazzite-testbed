@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="step-content">
+    <h2>🤖 AI Management Settings</h2>
+    <p class="step-description">Your STFD network includes AI-assisted management. Here's what the AI can do and how to control it:</p>
+    
+    <div class="permissions-list">
+        <div class="permission-item">
+            <label class="checkbox-label">
+                <input type="checkbox" id="autoSecurityUpdates" checked>
+                <div class="permission-content">
+                    <h3>Automatic Security Updates</h3>
+                    <p>AI monitors for security patches and applies them</p>
+                    <p class="detail">You'll be notified before major updates</p>
+                </div>
+            </label>
+        </div>
+        
+        <div class="permission-item">
+            <label class="checkbox-label">
+                <input type="checkbox" id="systemMonitoring" checked>
+                <div class="permission-content">
+                    <h3>System Health Monitoring</h3>
+                    <p>AI checks disk space, performance, errors</p>
+                    <p class="detail">Alerts you to potential issues</p>
+                </div>
+            </label>
+        </div>
+        
+        <div class="permission-item">
+            <label class="checkbox-label">
+                <input type="checkbox" id="autoAppUpdates">
+                <div class="permission-content">
+                    <h3>Automatic App Updates</h3>
+                    <p>AI keeps your apps up to date</p>
+                    <p class="detail">You can review updates before they install</p>
+                </div>
+            </label>
+        </div>
+        
+        <div class="permission-item">
+            <label class="checkbox-label">
+                <input type="checkbox" id="remoteTroubleshooting">
+                <div class="permission-content">
+                    <h3>Remote Troubleshooting</h3>
+                    <p>Allow admin to access this PC remotely via SSH</p>
+                    <p class="detail">Only when you approve the connection</p>
+                </div>
+            </label>
+        </div>
+    </div>
+    
+    <div class="info-panel">
+        <h3>Privacy & Control</h3>
+        <ul>
+            <li>🔒 All AI processing happens locally (no cloud)</li>
+            <li>⚙️ You can disable any feature anytime from Settings</li>
+            <li>✋ Remote access requires your explicit approval</li>
+            <li>📋 AI actions are logged and visible to you</li>
+        </ul>
+        
+        <div class="recommendation">
+            <strong>ℹ️ Recommended:</strong> Enable security updates and system monitoring. Disable remote access unless you need tech support.
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="button-group">
+    <button class="btn btn-secondary" onclick="window.location.href='/step/2'">
+        ← Back
+    </button>
+    <button class="btn btn-primary" onclick="saveAIPermissions()">
+        Continue →
+    </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function saveAIPermissions() {
+    const permissions = {
+        auto_security_updates: document.getElementById('autoSecurityUpdates').checked,
+        system_monitoring: document.getElementById('systemMonitoring').checked,
+        auto_app_updates: document.getElementById('autoAppUpdates').checked,
+        remote_troubleshooting: document.getElementById('remoteTroubleshooting').checked
+    };
+    
+    fetch('/api/ai-permissions', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({permissions: permissions})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/step/4';
+        }
+    });
+}
+</script>
+{% endblock %}

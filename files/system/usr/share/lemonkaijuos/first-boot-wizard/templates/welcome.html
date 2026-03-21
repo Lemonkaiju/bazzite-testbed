@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="welcome-screen">
+    <div class="welcome-logo">
+        <h1>🍋</h1>
+        <h2>Welcome to LemonKaijuOS</h2>
+    </div>
+    
+    <div class="welcome-message">
+        <p class="tagline">Your privacy-focused, family-friendly operating system</p>
+        
+        <div class="features">
+            <div class="feature">
+                <span class="icon">🔒</span>
+                <h3>Privacy First</h3>
+                <p>Your data stays on your computer, not in the cloud</p>
+            </div>
+            
+            <div class="feature">
+                <span class="icon">👨‍👩‍👧‍👦</span>
+                <h3>Family Friendly</h3>
+                <p>Multiple users with appropriate controls for kids</p>
+            </div>
+            
+            <div class="feature">
+                <span class="icon">🤖</span>
+                <h3>AI Assisted</h3>
+                <p>Local AI helps manage your computer (optional)</p>
+            </div>
+            
+            <div class="feature">
+                <span class="icon">🎨</span>
+                <h3>Creative Tools</h3>
+                <p>Professional apps for photo, video, music, and more</p>
+            </div>
+        </div>
+        
+        <div class="setup-info">
+            <p><strong>This setup will take about 10-15 minutes.</strong></p>
+            <p>We'll help you:</p>
+            <ul>
+                <li>Create user accounts for your family</li>
+                <li>Choose which apps to install</li>
+                <li>Set up AI assistance (optional)</li>
+                <li>Connect to your home network (optional)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="button-group">
+    <button class="btn btn-primary btn-large" onclick="window.location.href='/step/1'">
+        Get Started →
+    </button>
+</div>
+{% endblock %}

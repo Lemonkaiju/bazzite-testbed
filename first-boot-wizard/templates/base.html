@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LemonKaijuOS Setup</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/wizard.css') }}">
+</head>
+<body>
+    <div class="wizard-container">
+        <header class="wizard-header">
+            <h1>🍋 LemonKaijuOS Setup</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ (state.step / 8 * 100) }}%"></div>
+            </div>
+            <p class="step-indicator">Step {{ state.step }} of 8</p>
+        </header>
+        
+        <main class="wizard-content">
+            {% block content %}{% endblock %}
+        </main>
+        
+        <footer class="wizard-footer">
+            {% block footer %}{% endblock %}
+        </footer>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/wizard.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

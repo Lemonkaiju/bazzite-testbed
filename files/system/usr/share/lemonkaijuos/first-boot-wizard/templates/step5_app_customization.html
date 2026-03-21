@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="step-content">
+    <h2>🎨 Customize Your Apps</h2>
+    <p class="step-description">Select the categories and apps you want to install:</p>
+    
+    <div class="disk-space-indicator">
+        <div class="space-bar">
+            <div class="space-used" id="spaceUsed" style="width: 0%"></div>
+        </div>
+        <p>Total Selected: <span id="totalSize">0 MB</span> | Available Space: <span id="availableSpace">87 GB</span></p>
+    </div>
+    
+    <div class="categories-list">
+        {% for cat_id, category in categories.items() %}
+        <div class="category-section">
+            <label class="category-header">
+                <input type="checkbox" class="category-checkbox" id="cat-{{ cat_id }}" 
+                       onchange="toggleCategory('{{ cat_id }}')">
+                <div class="category-title">
+                    <span class="category-icon">{{ category.icon }}</span>
+                    <h3>{{ category.name }}</h3>
+                    <span class="category-size" id="catsize-{{ cat_id }}">0 MB</span>
+                </div>
+            </label>
+            <p class="category-description">{{ category.description }}</p>
+            
+            <div class="apps-list" id="apps-{{ cat_id }}" style="display: none;">
+                {% for app in category.apps %}
+                <div class="app-item">
+                    <label class="app-checkbox-label">
+                        <input type="checkbox" class="app-checkbox" 
+                               data-category="{{ cat_id }}"
+                               data-app-id="{{ app.id }}"
+                               data-size="{{ app.size }}"
+                               onchange="updateSelection()">
+                        <div class="app-info">
+                            <h4>{{ app.name }}</h4>
+                            <p class="app-description">{{ app.description }}</p>
+                            <p class="app-size">{{ app.size }} MB</p>
+                        </div>
+                        <button class="info-btn" onclick="showAppInfo(event, '{{ app.id }}')">ℹ️</button>
+                    </label>
+                    <div class="app-tooltip" id="tooltip-{{ app.id }}" style="display: none;">
+                        <p><strong>Like:</strong> {{ app.tooltip }}</p>
+                        <p><strong>Difficulty:</strong> {{ app.difficulty }}</p>
+                        <p><strong>Best for:</strong> {{ app.best_for }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="button-group">
+    <button class="btn btn-secondary" onclick="window.location.href='/step/4'">
+        ← Back
+    </button>
+    <button class="btn btn-secondary" onclick="resetToProfile()">
+        Reset to Profile
+    </button>
+    <button class="btn btn-primary" onclick="saveAppSelection()">
+        Continue →
+    </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let totalSizeMB = 0;
+const availableSpaceGB = 87; // Will be dynamically calculated
+
+function toggleCategory(catId) {
+    const checkbox = document.getElementById('cat-' + catId);
+    const appsList = document.getElementById('apps-' + catId);
+    const isChecked = checkbox.checked;
+    
+    // Show/hide apps list
+    appsList.style.display = isChecked ? 'block' : 'none';
+    
+    // Check/uncheck all apps in category
+    const appCheckboxes = appsList.querySelectorAll('.app-checkbox');
+    appCheckboxes.forEach(cb => {
+        cb.checked = isChecked;
+    });
+    
+    updateSelection();
+}
+
+function updateSelection() {
+    totalSizeMB = 0;
+    
+    // Calculate total size
+    document.querySelectorAll('.app-checkbox:checked').forEach(checkbox => {
+        totalSizeMB += parseInt(checkbox.dataset.size);
+    });
+    
+    // Update category sizes
+    document.querySelectorAll('.category-section').forEach(section => {
+        const catId = section.querySelector('.category-checkbox').id.replace('cat-', '');
+        const catCheckboxes = section.querySelectorAll('.app-checkbox:checked');
+        let catSize = 0;
+        catCheckboxes.forEach(cb => catSize += parseInt(cb.dataset.size));
+        
+        const catSizeEl = document.getElementById('catsize-' + catId);
+        if (catSize > 0) {
+            catSizeEl.textContent = catSize > 1000 ? (catSize / 1000).toFixed(1) + ' GB' : catSize + ' MB';
+        } else {
+            catSizeEl.textContent = '0 MB';
+        }
+    });
+    
+    // Update total display
+    const totalSizeEl = document.getElementById('totalSize');
+    if (totalSizeMB > 1000) {
+        totalSizeEl.textContent = (totalSizeMB / 1000).toFixed(1) + ' GB';
+    } else {
+        totalSizeEl.textContent = totalSizeMB + ' MB';
+    }
+    
+    // Update progress bar
+    const baseSize = 24000; // 24 GB base OS
+    const totalWithBase = baseSize + totalSizeMB;
+    const percentUsed = (totalWithBase / (availableSpaceGB * 1000)) * 100;
+    document.getElementById('spaceUsed').style.width = percentUsed + '%';
+    
+    // Warn if low space
+    if (percentUsed > 80) {
+        document.getElementById('spaceUsed').style.backgroundColor = '#ff6b6b';
+    } else {
+        document.getElementById('spaceUsed').style.backgroundColor = '#4ecdc4';
+    }
+}
+
+function showAppInfo(event, appId) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const tooltip = document.getElementById('tooltip-' + appId);
+    tooltip.style.display = tooltip.style.display === 'none' ? 'block' : 'none';
+}
+
+function resetToProfile() {
+    // Reset to selected profile defaults
+    location.reload();
+}
+
+function saveAppSelection() {
+    const selectedApps = [];
+    document.querySelectorAll('.app-checkbox:checked').forEach(checkbox => {
+        selectedApps.push(checkbox.dataset.appId);
+    });
+    
+    fetch('/api/apps', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            profile: '{{ state.selected_profile }}',
+            apps: selectedApps
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/step/6';
+        }
+    });
+}
+
+// Initialize based on selected profile
+window.onload = function() {
+    // Load profile defaults if not custom
+    updateSelection();
+};
+</script>
+{% endblock %}

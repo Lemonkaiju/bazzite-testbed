@@ -23,4 +23,9 @@ chmod +x \
     /usr/bin/stfd-cli \
     /usr/bin/lemonkaijuos-pin-validate
 
+echo ">>> LemonKaijuOS: Setting permissions on first-boot wizard"
+chmod +x \
+    /usr/share/lemonkaijuos/first-boot-wizard/run-wizard.sh \
+    /usr/share/lemonkaijuos/first-boot-wizard/wizard.py
+
 echo ">>> LemonKaijuOS: Setup complete"

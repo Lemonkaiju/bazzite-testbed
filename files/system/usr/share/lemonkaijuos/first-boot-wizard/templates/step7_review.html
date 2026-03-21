@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="step-content">
+    <h2>📋 Review Your Choices</h2>
+    <p class="step-description">Please review your selections before we begin installation:</p>
+    
+    <div class="review-sections">
+        <div class="review-section">
+            <h3>👥 User Accounts</h3>
+            <div id="reviewUsers">
+                <p class="loading">Loading...</p>
+            </div>
+        </div>
+        
+        <div class="review-section">
+            <h3>🏠 Home Network</h3>
+            <div id="reviewSTFD">
+                <p class="loading">Loading...</p>
+            </div>
+        </div>
+        
+        <div class="review-section">
+            <h3>🎨 Applications</h3>
+            <div id="reviewApps">
+                <p class="loading">Loading...</p>
+            </div>
+        </div>
+        
+        <div class="review-section">
+            <h3>🤖 AI Assistant</h3>
+            <div id="reviewAI">
+                <p class="loading">Loading...</p>
+            </div>
+        </div>
+        
+        <div class="review-section summary">
+            <h3>💾 Disk Space Summary</h3>
+            <div class="space-summary">
+                <div class="space-row">
+                    <span>Base System:</span>
+                    <span>~24 GB</span>
+                </div>
+                <div class="space-row">
+                    <span>Selected Apps:</span>
+                    <span id="appsSize">0 GB</span>
+                </div>
+                <div class="space-row">
+                    <span>AI Model:</span>
+                    <span id="aiSize">0 GB</span>
+                </div>
+                <div class="space-row total">
+                    <span><strong>Total Required:</strong></span>
+                    <span id="totalRequired"><strong>~24 GB</strong></span>
+                </div>
+                <div class="space-row">
+                    <span>Available Space:</span>
+                    <span>87 GB</span>
+                </div>
+                <div class="space-row remaining">
+                    <span>Remaining After Install:</span>
+                    <span id="remaining">~63 GB</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info-box">
+        <p><strong>⏱️ Estimated installation time: 15-30 minutes</strong></p>
+        <p>The installation will download and install your selected applications. You can use the computer while this happens in the background.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="button-group">
+    <button class="btn btn-secondary" onclick="window.location.href='/step/6'">
+        ← Back
+    </button>
+    <button class="btn btn-primary btn-large" onclick="startInstallation()">
+        Start Installation →
+    </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Load and display review information
+window.onload = function() {
+    // This would fetch from backend state
+    // For now, showing placeholder
+    
+    document.getElementById('reviewUsers').innerHTML = `
+        <p>✓ Primary Administrator: john</p>
+        <p>✓ 2 additional family members</p>
+    `;
+    
+    document.getElementById('reviewSTFD').innerHTML = `
+        <p>✓ Connected to STFD network</p>
+        <p>✓ AI management enabled</p>
+        <p>✓ Automatic security updates: Yes</p>
+    `;
+    
+    document.getElementById('reviewApps').innerHTML = `
+        <p>✓ 15 applications selected</p>
+        <p>Categories: Photo Editing, Digital Art, Education</p>
+    `;
+    
+    document.getElementById('reviewAI').innerHTML = `
+        <p>✓ Local AI (Ollama with llama3.1:8b)</p>
+        <p>✓ OnlyOffice AI integration enabled</p>
+    `;
+    
+    // Calculate sizes
+    const appsSize = 3.5; // GB
+    const aiSize = 4.7; // GB
+    const baseSize = 24;
+    const total = baseSize + appsSize + aiSize;
+    const remaining = 87 - total;
+    
+    document.getElementById('appsSize').textContent = appsSize.toFixed(1) + ' GB';
+    document.getElementById('aiSize').textContent = aiSize.toFixed(1) + ' GB';
+    document.getElementById('totalRequired').innerHTML = '<strong>~' + total.toFixed(1) + ' GB</strong>';
+    document.getElementById('remaining').textContent = '~' + remaining.toFixed(1) + ' GB';
+};
+
+function startInstallation() {
+    if (confirm('Ready to begin installation? This will take 15-30 minutes.')) {
+        window.location.href = '/step/8';
+    }
+}
+</script>
+{% endblock %}

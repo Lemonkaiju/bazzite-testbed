@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="step-content installation-screen">
+    <h2>⚙️ Installing LemonKaijuOS</h2>
+    <p class="step-description">Please wait while we set up your system...</p>
+    
+    <div class="installation-progress">
+        <div class="progress-bar-large">
+            <div class="progress-fill-large" id="installProgress"></div>
+        </div>
+        <p class="progress-text" id="progressText">0%</p>
+    </div>
+    
+    <div class="installation-steps">
+        <div class="install-step" id="step-users">
+            <span class="step-status">⏳</span>
+            <span class="step-name">Creating user accounts...</span>
+        </div>
+        <div class="install-step" id="step-stfd">
+            <span class="step-status">⏳</span>
+            <span class="step-name">Configuring network integration...</span>
+        </div>
+        <div class="install-step" id="step-apps">
+            <span class="step-status">⏳</span>
+            <span class="step-name">Installing applications...</span>
+        </div>
+        <div class="install-step" id="step-ai">
+            <span class="step-status">⏳</span>
+            <span class="step-name">Setting up AI assistant...</span>
+        </div>
+        <div class="install-step" id="step-finalize">
+            <span class="step-status">⏳</span>
+            <span class="step-name">Finalizing configuration...</span>
+        </div>
+    </div>
+    
+    <div class="installation-log">
+        <h4>Installation Log</h4>
+        <div class="log-content" id="logContent">
+            <p>Starting installation...</p>
+        </div>
+    </div>
+    
+    <div id="completionMessage" style="display: none;">
+        <div class="success-message">
+            <h2>🎉 Installation Complete!</h2>
+            <p>LemonKaijuOS is ready to use.</p>
+            <p>The computer will restart in <span id="countdown">10</span> seconds...</p>
+            <button class="btn btn-primary btn-large" onclick="restartNow()">
+                Restart Now
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<!-- No footer during installation -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+let progress = 0;
+let currentStep = 0;
+const steps = ['users', 'stfd', 'apps', 'ai', 'finalize'];
+
+function updateProgress(percent, stepId, status, message) {
+    progress = percent;
+    document.getElementById('installProgress').style.width = percent + '%';
+    document.getElementById('progressText').textContent = percent + '%';
+    
+    if (stepId) {
+        const stepEl = document.getElementById('step-' + stepId);
+        const statusIcon = stepEl.querySelector('.step-status');
+        
+        if (status === 'complete') {
+            statusIcon.textContent = '✓';
+            statusIcon.style.color = '#4ecdc4';
+        } else if (status === 'error') {
+            statusIcon.textContent = '✗';
+            statusIcon.style.color = '#ff6b6b';
+        } else {
+            statusIcon.textContent = '⏳';
+        }
+    }
+    
+    if (message) {
+        addLog(message);
+    }
+}
+
+function addLog(message) {
+    const logContent = document.getElementById('logContent');
+    const p = document.createElement('p');
+    p.textContent = message;
+    logContent.appendChild(p);
+    logContent.scrollTop = logContent.scrollHeight;
+}
+
+function startInstallation() {
+    fetch('/api/install', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            simulateInstallation(); // In real implementation, this would poll for progress
+        } else {
+            addLog('Error: ' + data.error);
+        }
+    });
+}
+
+function simulateInstallation() {
+    // Simulate installation progress
+    let step = 0;
+    const interval = setInterval(() => {
+        step++;
+        
+        if (step <= 20) {
+            updateProgress(step * 5, 'users', 'progress', 'Creating user account: ' + step + '/4');
+        } else if (step <= 30) {
+            if (step === 21) updateProgress(20, 'users', 'complete', 'User accounts created');
+            updateProgress(20 + (step - 20) * 2, 'stfd', 'progress', 'Configuring network...');
+        } else if (step <= 70) {
+            if (step === 31) updateProgress(40, 'stfd', 'complete', 'Network configured');
+            updateProgress(40 + (step - 30) * 1.25, 'apps', 'progress', 'Installing app ' + (step - 30) + '/15');
+        } else if (step <= 85) {
+            if (step === 71) updateProgress(90, 'apps', 'complete', 'Applications installed');
+            updateProgress(90 + (step - 70) * 0.5, 'ai', 'progress', 'Downloading AI model...');
+        } else if (step <= 95) {
+            if (step === 86) updateProgress(97, 'ai', 'complete', 'AI assistant configured');
+            updateProgress(97 + (step - 85) * 0.3, 'finalize', 'progress', 'Finalizing...');
+        } else {
+            clearInterval(interval);
+            updateProgress(100, 'finalize', 'complete', 'Installation complete!');
+            showCompletion();
+        }
+    }, 200);
+}
+
+function showCompletion() {
+    document.getElementById('completionMessage').style.display = 'block';
+    
+    let countdown = 10;
+    const countdownEl = document.getElementById('countdown');
+    
+    const countInterval = setInterval(() => {
+        countdown--;
+        countdownEl.textContent = countdown;
+        
+        if (countdown <= 0) {
+            clearInterval(countInterval);
+            restartNow();
+        }
+    }, 1000);
+}
+
+function restartNow() {
+    addLog('Restarting system...');
+    // In real implementation, this would trigger a system restart
+    window.location.href = '/';
+}
+
+// Start installation when page loads
+window.onload = function() {
+    setTimeout(startInstallation, 1000);
+};
+</script>
+{% endblock %}

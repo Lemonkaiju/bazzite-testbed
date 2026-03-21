@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="step-content">
+    <h2>🎨 Choose Your Apps</h2>
+    <p class="step-description">Select a profile that matches how you'll use this PC:</p>
+    
+    <div class="profile-cards">
+        <div class="profile-card active" id="profile-custom" onclick="selectProfile('custom')">
+            <div class="profile-icon">⚙️</div>
+            <h3>Custom Selection</h3>
+            <p class="recommended">(Recommended)</p>
+            <p>Choose exactly which apps you want</p>
+            <p>Pick categories and apps that match your needs</p>
+            <p class="size">Size: Varies based on your choices</p>
+        </div>
+    </div>
+    
+    <div class="divider">
+        <span>Too hard? Choose one of these profiles:</span>
+    </div>
+    
+    <div class="profile-cards">
+        {% for profile_id, profile in profiles.items() %}
+        <div class="profile-card" id="profile-{{ profile_id }}" onclick="selectProfile('{{ profile_id }}')">
+            <div class="profile-icon">{{ profile.icon }}</div>
+            <h3>{{ profile.name }}</h3>
+            <p>{{ profile.description }}</p>
+            <p class="size">Size: ~{{ (profile.size / 1000) | round(1) }} GB</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="info-box">
+        <p>ℹ️ All profiles can be customized on the next screen</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="button-group">
+    <button class="btn btn-secondary" onclick="goBack()">
+        ← Back
+    </button>
+    <button class="btn btn-primary" onclick="continueToCustomization()">
+        Continue →
+    </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let selectedProfile = 'custom';
+
+function selectProfile(profileId) {
+    selectedProfile = profileId;
+    
+    // Update UI
+    document.querySelectorAll('.profile-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    document.getElementById('profile-' + profileId).classList.add('active');
+}
+
+function goBack() {
+    // Check if STFD was enabled to determine which step to go back to
+    window.location.href = '/step/3'; // Will be adjusted based on state
+}
+
+function continueToCustomization() {
+    // Save selected profile and continue to customization
+    fetch('/api/apps', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({profile: selectedProfile, apps: []})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/step/5';
+        }
+    });
+}
+</script>
+{% endblock %}

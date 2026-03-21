@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="step-content">
+    <h2>🤖 AI Assistant Setup</h2>
+    <p class="step-description">OnlyOffice includes an AI helper for document creation. Would you like to set it up?</p>
+    
+    <div class="choice-cards">
+        <div class="choice-card active" id="aiLocal" onclick="selectAI('local')">
+            <div class="choice-icon">🏠</div>
+            <h3>Use Local AI (Recommended)</h3>
+            <p>Free, private, runs on this computer</p>
+            <div class="ai-details">
+                <p><strong>Features:</strong></p>
+                <ul>
+                    <li>Generate and rewrite text</li>
+                    <li>Summarize documents</li>
+                    <li>Translate languages</li>
+                    <li>Analyze and format content</li>
+                </ul>
+                <p><strong>Requirements:</strong></p>
+                <ul>
+                    <li>Download size: ~50 MB (Ollama)</li>
+                    <li>Model size: ~4.7 GB (llama3.1:8b)</li>
+                    <li>Disk space needed: ~5 GB total</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="choice-card" id="aiService" onclick="selectAI('service')">
+            <div class="choice-icon">☁️</div>
+            <h3>Use My Own AI Service</h3>
+            <p>OpenAI, Anthropic Claude, etc.</p>
+        </div>
+        
+        <div class="choice-card" id="aiLater" onclick="selectAI('later')">
+            <div class="choice-icon">⏭️</div>
+            <h3>Set Up Later</h3>
+            <p>Skip for now, configure from Settings</p>
+        </div>
+    </div>
+    
+    <div id="localAIInfo" class="info-panel">
+        <h3>Checking system...</h3>
+        <div id="spaceCheck">
+            <p class="loading">Checking available disk space...</p>
+        </div>
+    </div>
+    
+    <div id="serviceAIForm" class="ai-service-form" style="display: none;">
+        <h3>🔑 AI Service Configuration</h3>
+        
+        <div class="form-group">
+            <label>Provider</label>
+            <select id="aiProvider">
+                <option value="openai">OpenAI (ChatGPT)</option>
+                <option value="anthropic">Anthropic (Claude)</option>
+                <option value="google">Google (Gemini)</option>
+                <option value="azure">Azure OpenAI</option>
+                <option value="custom">Custom API</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>API Key</label>
+            <input type="password" id="apiKey" placeholder="sk-...">
+        </div>
+        
+        <div class="form-group">
+            <label>Model</label>
+            <input type="text" id="aiModel" placeholder="gpt-4">
+        </div>
+        
+        <div class="warning-box">
+            <p>⚠️ Note: API usage may incur costs from your provider</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="button-group">
+    <button class="btn btn-secondary" onclick="window.location.href='/step/5'">
+        ← Back
+    </button>
+    <button class="btn btn-primary" onclick="saveAISetup()">
+        Continue →
+    </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let aiChoice = 'local';
+let availableSpaceGB = 87;
+
+function selectAI(choice) {
+    aiChoice = choice;
+    
+    // Update UI
+    document.querySelectorAll('.choice-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    document.getElementById('ai' + choice.charAt(0).toUpperCase() + choice.slice(1)).classList.add('active');
+    
+    // Show/hide relevant sections
+    document.getElementById('localAIInfo').style.display = choice === 'local' ? 'block' : 'none';
+    document.getElementById('serviceAIForm').style.display = choice === 'service' ? 'block' : 'none';
+    
+    if (choice === 'local') {
+        checkDiskSpace();
+    }
+}
+
+function checkDiskSpace() {
+    const spaceCheck = document.getElementById('spaceCheck');
+    
+    // Simulate disk space check
+    setTimeout(() => {
+        if (availableSpaceGB >= 10) {
+            spaceCheck.innerHTML = `
+                <p class="success">✓ Available disk space: ${availableSpaceGB} GB</p>
+                <p class="success">✓ Sufficient space for AI assistant (requires 5 GB)</p>
+                <p><strong>Your AI assistant will be ready to use!</strong></p>
+                <ul>
+                    <li>Completely free</li>
+                    <li>Works offline</li>
+                    <li>Your data stays private</li>
+                </ul>
+            `;
+        } else {
+            spaceCheck.innerHTML = `
+                <p class="warning">⚠️ Available disk space: ${availableSpaceGB} GB</p>
+                <p class="warning">Low disk space. AI model requires 5 GB.</p>
+                <p>Consider using a cloud AI service or freeing up space.</p>
+            `;
+        }
+    }, 1000);
+}
+
+function saveAISetup() {
+    const config = {
+        choice: aiChoice,
+        ollama_enabled: aiChoice === 'local' && availableSpaceGB >= 10
+    };
+    
+    if (aiChoice === 'service') {
+        config.provider = document.getElementById('aiProvider').value;
+        config.api_key = document.getElementById('apiKey').value;
+        config.model = document.getElementById('aiModel').value;
+    }
+    
+    fetch('/api/ai-permissions', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({permissions: config})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/step/7';
+        }
+    });
+}
+
+// Check disk space on load
+window.onload = function() {
+    checkDiskSpace();
+};
+</script>
+{% endblock %}

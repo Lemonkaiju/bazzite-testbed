@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=LemonKaijuOS First Boot Setup
+Comment=Runs the LemonKaijuOS setup wizard on first desktop login
+Exec=/usr/share/lemonkaijuos/first-boot-wizard/run-wizard.sh
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
