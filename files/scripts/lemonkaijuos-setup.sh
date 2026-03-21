@@ -21,6 +21,6 @@ chmod +x \
     /usr/bin/security-cli \
     /usr/bin/profile-cli \
     /usr/bin/stfd-cli \
-    /usr/local/bin/lemonkaijuos-pin-validate
+    /usr/bin/lemonkaijuos-pin-validate
 
 echo ">>> LemonKaijuOS: Setup complete"
