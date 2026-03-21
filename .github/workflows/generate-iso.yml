@@ -30,9 +30,11 @@ jobs:
           version: 43          # Fedora base version (matches Bazzite stable)
           variant: Kinoite     # KDE variant matches Bazzite
           iso_name: lemonkaijuos.iso
+          image_signed: "false"    # image built with --no-sign, no cosign sig exists
           enrollment_password: ""  # leave empty to skip secure-boot enrollment
           web_ui: false
-          kickstart_file: kickstart/lemonkaijuos.ks
+          # kickstart_file not supported by this action; use extra_boot_params or
+          # press Tab at GRUB and add: inst.ks=hd:LABEL=<label>:/lemonkaijuos.ks
 
       - name: Upload ISO artifact
         uses: actions/upload-artifact@v4
