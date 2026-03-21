@@ -1,14 +1,15 @@
 // LemonKaijuOS SDDM Theme — Main.qml
 // Dark PIN-pad login screen for family-friendly secure boot.
+// Visual style: KDE Plasma Breeze dark — slate/navy palette, blue accent.
 //
 // Auth flow (PIN mode):
 //   PinDisplay auto-submits at 6 digits → sddm.login(user, pin, session)
 //   sddm.loginFailed → shake dots, clear, show error message
 //
 // Auth flow (password mode):
-//   User types password, presses Enter or ✓ button → sddm.login(user, pass, session)
+//   User types password, presses Enter or Sign in button → sddm.login(user, pass, session)
 //
-// Toggle: "Use password instead" / "Use PIN instead" link under the numpad.
+// Toggle: "Use PIN instead" / "Use password instead" link under the numpad.
 // Background: user wallpaper blurred + dark overlay (frosted glass effect).
 // PAM must be configured to accept the PIN as the password.
 
@@ -62,7 +63,7 @@ Item {
         pinDisplay.clear()
         passwordField.text = ""
         statusText.text = pinMode ? "Enter your PIN" : "Enter your password"
-        statusText.color = "#484f58"
+        statusText.color = "#9aaab4"
         if (pinMode)
             pinPad.forceActiveFocus()
         else
@@ -83,11 +84,11 @@ Item {
                 passwordField.forceActiveFocus()
             }
             statusText.text = "Incorrect " + (pinMode ? "PIN" : "password") + " — try again"
-            statusText.color = "#f85149"
+            statusText.color = "#da4453"
         }
     }
 
-    // ── Background — blurred wallpaper + frosted glass overlay ──────────────
+    // ── Background — blurred wallpaper + dark overlay ────────────────────────
 
     Image {
         id: wallpaperSource
@@ -101,12 +102,12 @@ Item {
     FastBlur {
         anchors.fill: parent
         source: wallpaperSource
-        radius: 56
+        radius: 48
     }
 
     Rectangle {
         anchors.fill: parent
-        color: "#b2000000"
+        color: "#cc1a1d26"
     }
 
     // ── Clock (top-right) ────────────────────────────────────────────────────
@@ -122,7 +123,7 @@ Item {
         Text {
             id: clockTime
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#8b949e"
+            color: "#eff0f1"
             font.pixelSize: 48
             font.weight: Font.Light
         }
@@ -130,7 +131,7 @@ Item {
         Text {
             id: clockDate
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#484f58"
+            color: "#9aaab4"
             font.pixelSize: 16
         }
 
@@ -152,18 +153,18 @@ Item {
     Rectangle {
         id: card
         anchors.centerIn: parent
-        width: 320
+        width: 340
         height: col.implicitHeight + 64
-        radius: 20
-        color: "#161b22"
-        border.color: "#30363d"
+        radius: 12
+        color: "#ee1b1f27"
+        border.color: "#14ffffff"
         border.width: 1
 
         layer.enabled: true
         layer.effect: DropShadow {
-            radius: 32
-            samples: 33
-            color: "#263fb950"
+            radius: 28
+            samples: 29
+            color: "#50000000"
             transparentBorder: true
         }
 
@@ -175,7 +176,7 @@ Item {
                 right: parent.right
                 margins: 32
             }
-            spacing: 28
+            spacing: 24
 
             // User avatar + greeting
             UserBadge {
@@ -201,15 +202,15 @@ Item {
                 visible: !pinMode
                 echoMode: TextInput.Password
                 placeholderText: "Password"
-                color: "#e6edf3"
+                color: "#eff0f1"
                 font.pixelSize: 16
                 horizontalAlignment: TextInput.AlignHCenter
 
                 background: Rectangle {
-                    color: "#21262d"
-                    border.color: passwordField.activeFocus ? "#3fb950" : "#30363d"
+                    color: "#1affffff"
+                    border.color: passwordField.activeFocus ? "#3daee9" : "#1fffffff"
                     border.width: 1
-                    radius: 8
+                    radius: 6
                 }
 
                 Keys.onReturnPressed: { if (text.length > 0) doLogin(text) }
@@ -221,7 +222,7 @@ Item {
                 id: statusText
                 Layout.alignment: Qt.AlignHCenter
                 text: "Enter your password"
-                color: "#484f58"
+                color: "#9aaab4"
                 font.pixelSize: 13
             }
 
@@ -239,24 +240,24 @@ Item {
                 }
             }
 
-            // Password confirm button (password mode only)
+            // Password sign-in button (password mode only)
             Rectangle {
                 Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
                 visible: !pinMode
-                width: 72
-                height: 44
-                radius: 10
-                color: pwBtn.pressed ? "#3fb950" : pwBtn.containsMouse ? "#21262d" : "#161b22"
-                border.color: "#3fb950"
-                border.width: 2
+                height: 40
+                radius: 6
+                color: pwBtn.pressed ? "#2980b9"
+                     : pwBtn.containsMouse ? "#48a9d4"
+                     : "#3daee9"
 
-                Behavior on color { ColorAnimation { duration: 80 } }
+                Behavior on color { ColorAnimation { duration: 100 } }
 
                 Text {
                     anchors.centerIn: parent
                     text: "Sign in"
-                    color: "#3fb950"
-                    font.pixelSize: 13
+                    color: "#ffffff"
+                    font.pixelSize: 14
                     font.weight: Font.Medium
                 }
 
@@ -273,7 +274,7 @@ Item {
                 id: modeToggle
                 Layout.alignment: Qt.AlignHCenter
                 text: pinMode ? "Use password instead" : "Use PIN instead"
-                color: "#484f58"
+                color: "#7f8c98"
                 font.pixelSize: 12
 
                 Behavior on color { ColorAnimation { duration: 80 } }
@@ -283,7 +284,7 @@ Item {
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
                     onClicked: switchMode(!pinMode)
-                    onContainsMouseChanged: modeToggle.color = containsMouse ? "#8b949e" : "#484f58"
+                    onContainsMouseChanged: modeToggle.color = containsMouse ? "#9aaab4" : "#7f8c98"
                 }
             }
 
@@ -291,10 +292,10 @@ Item {
             Text {
                 Layout.alignment: Qt.AlignHCenter
                 text: "LemonKaijuOS"
-                color: "#3fb950"
+                color: "#3daee9"
                 font.pixelSize: 11
                 font.letterSpacing: 2
-                opacity: 0.6
+                opacity: 0.5
             }
 
             Item { height: 0 }  // bottom padding spacer

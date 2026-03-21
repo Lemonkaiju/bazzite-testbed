@@ -15,11 +15,11 @@ ColumnLayout {
     // Avatar
     Rectangle {
         Layout.alignment: Qt.AlignHCenter
-        width: 80
-        height: 80
-        radius: 40
-        color: "#21262d"
-        border.color: "#3fb950"
+        width: 88
+        height: 88
+        radius: 44
+        color: "#0affffff"
+        border.color: "#3daee9"
         border.width: 2
         clip: true
 
@@ -35,9 +35,9 @@ ColumnLayout {
             anchors.centerIn: parent
             visible: root.avatarPath === ""
             text: root.realName.length > 0 ? root.realName[0].toUpperCase() : "?"
-            font.pixelSize: 32
-            font.weight: Font.Medium
-            color: "#3fb950"
+            font.pixelSize: 34
+            font.weight: Font.Light
+            color: "#3daee9"
         }
     }
 
@@ -45,7 +45,7 @@ ColumnLayout {
     Text {
         Layout.alignment: Qt.AlignHCenter
         text: root.realName.length > 0 ? "Welcome back, " + root.realName : "Welcome back"
-        color: "#e6edf3"
+        color: "#eff0f1"
         font.pixelSize: 18
         font.weight: Font.Medium
     }

@@ -39,15 +39,15 @@ Item {
 
                 implicitWidth:  72
                 implicitHeight: 72
-                radius: 12
+                radius: 10
 
-                color: ma.pressed ? "#3fb950"
-                     : ma.containsMouse ? "#21262d"
-                     : "#161b22"
+                color: ma.pressed      ? "#3daee9"
+                     : ma.containsMouse ? "#252c3a"
+                     : "#1e2330"
 
-                border.color: isConfirm ? "#3fb950"
-                            : isDelete  ? "#484f58"
-                            : "#30363d"
+                border.color: isConfirm ? "#3daee9"
+                            : isDelete  ? "#6b7a8a"
+                            : "#1fffffff"
                 border.width: isConfirm ? 2 : 1
 
                 Behavior on color { ColorAnimation { duration: 80 } }
@@ -57,9 +57,9 @@ Item {
                     text: btn.label
                     font.pixelSize: btn.isDelete || btn.isConfirm ? 22 : 26
                     font.weight: Font.Medium
-                    color: btn.isConfirm ? "#3fb950"
-                         : btn.isDelete  ? "#8b949e"
-                         : "#e6edf3"
+                    color: btn.isConfirm ? "#3daee9"
+                         : btn.isDelete  ? "#9aaab4"
+                         : "#eff0f1"
                 }
 
                 MouseArea {

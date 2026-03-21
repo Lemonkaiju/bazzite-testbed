@@ -1,5 +1,5 @@
 // PinDisplay.qml
-// Renders N dots that fill with green as digits are entered.
+// Renders N dots that fill with blue as digits are entered.
 // Shakes on failed auth.
 
 import QtQuick 2.15
@@ -62,8 +62,8 @@ Item {
                 width: 14
                 height: 14
                 radius: 7
-                color: index < root.count ? "#3fb950" : "transparent"
-                border.color: index < root.count ? "#3fb950" : "#484f58"
+                color: index < root.count ? "#3daee9" : "transparent"
+                border.color: index < root.count ? "#3daee9" : "#40ffffff"
                 border.width: 2
 
                 Behavior on color {
