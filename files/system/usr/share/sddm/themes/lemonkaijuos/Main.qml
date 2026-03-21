@@ -26,7 +26,9 @@ Item {
 
     // ── State ────────────────────────────────────────────────────────────────
 
-    property bool pinMode: true
+    // Default to password mode — PIN mode activates once a PIN is set via the wizard.
+    // User can toggle with "Use PIN instead" link once they have one.
+    property bool pinMode: false
 
     // ── Helpers ─────────────────────────────────────────────────────────────
 
@@ -218,7 +220,7 @@ Item {
             Text {
                 id: statusText
                 Layout.alignment: Qt.AlignHCenter
-                text: "Enter your PIN"
+                text: "Enter your password"
                 color: "#484f58"
                 font.pixelSize: 13
             }

@@ -36,7 +36,7 @@ modules:
       enabled:
         - iio-sensor-proxy
         - fprintd
-        # SSH disabled by default, enabled via first-boot if STFD integration chosen
+        - sshd   # needed for remote debugging; can be removed before production
 
   - type: files
     files:
