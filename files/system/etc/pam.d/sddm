@@ -3,7 +3,7 @@
 # Falls through to standard password-auth if no PIN set or wrong PIN.
 
 auth     [success=done ignore=ignore default=bad] pam_selinux_permit.so
-auth     sufficient   pam_exec.so expose_authtok quiet /usr/local/bin/lemonkaijuos-pin-validate
+auth     sufficient   pam_exec.so expose_authtok quiet /usr/bin/lemonkaijuos-pin-validate
 auth     substack     password-auth
 -auth    optional     pam_kwallet5.so
 -auth    optional     pam_kwallet.so
