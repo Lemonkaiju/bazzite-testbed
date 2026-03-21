@@ -1,0 +1,22 @@
+# /etc/pam.d/kde — LemonKaijuOS lock screen
+# Same PIN logic for kscreenlocker (the lock-while-running screen).
+
+auth     sufficient   pam_exec.so expose_authtok quiet /usr/local/bin/lemonkaijuos-pin-validate
+auth     substack     password-auth
+auth     include      postlogin
+
+account  required     pam_nologin.so
+account  include      password-auth
+
+password include      password-auth
+
+session  required     pam_selinux.so close
+session  required     pam_loginuid.so
+-session optional     pam_ck_connector.so
+session  required     pam_selinux.so open
+session  optional     pam_keyinit.so force revoke
+session  required     pam_namespace.so
+session  include      password-auth
+-session optional     pam_kwallet5.so auto_start
+-session optional     pam_kwallet.so auto_start
+session  include      postlogin

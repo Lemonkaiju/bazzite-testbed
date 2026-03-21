@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=ZType
+Comment=Space shooter typing game - type words to destroy enemy ships
+Exec=xdg-open https://zty.pe
+Icon=input-keyboard
+Terminal=false
+Type=Application
+Categories=Education;Game;KidsGame;

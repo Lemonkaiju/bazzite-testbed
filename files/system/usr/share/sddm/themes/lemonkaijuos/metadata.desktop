@@ -1,0 +1,12 @@
+[SddmGreeterTheme]
+Name=LemonKaijuOS
+Description=PIN-based lock screen for LemonKaijuOS
+Author=LemonKaiju
+License=GPL-2.0
+Type=sddm-theme
+Version=0.1
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=lemonkaijuos
+Theme-API=2.0
+QtVersion=6

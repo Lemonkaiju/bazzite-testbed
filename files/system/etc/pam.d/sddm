@@ -1,0 +1,25 @@
+# /etc/pam.d/sddm — LemonKaijuOS
+# PIN auth via pam_exec (sufficient = success skips rest of auth stack)
+# Falls through to standard password-auth if no PIN set or wrong PIN.
+
+auth     [success=done ignore=ignore default=bad] pam_selinux_permit.so
+auth     sufficient   pam_exec.so expose_authtok quiet /usr/local/bin/lemonkaijuos-pin-validate
+auth     substack     password-auth
+-auth    optional     pam_kwallet5.so
+-auth    optional     pam_kwallet.so
+auth     include      postlogin
+
+account  required     pam_nologin.so
+account  include      password-auth
+
+password include      password-auth
+
+session  required     pam_selinux.so close
+session  required     pam_loginuid.so
+session  required     pam_selinux.so open
+session  optional     pam_keyinit.so force revoke
+session  required     pam_namespace.so
+session  include      password-auth
+-session optional     pam_kwallet5.so auto_start
+-session optional     pam_kwallet.so auto_start
+session  include      postlogin

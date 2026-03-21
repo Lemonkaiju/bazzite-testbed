@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+"""
+LemonKaijuOS PAM PIN Validator
+Called by pam_exec with expose_authtok — PIN is passed via stdin.
+PAM_USER env var contains the username.
+
+Exit 0 = auth success
+Exit 1 = auth failure
+Exit 2 = no PIN set for user (fall through to password-auth)
+"""
+
+import sys
+import os
+
+def main():
+    username = os.environ.get("PAM_USER", "")
+    if not username:
+        sys.exit(1)
+
+    # Read authtok from stdin (pam_exec expose_authtok)
+    try:
+        authtok = sys.stdin.readline().rstrip("\n")
+    except Exception:
+        sys.exit(1)
+
+    # Must be exactly 6 digits to even attempt PIN validation
+    if not authtok.isdigit() or len(authtok) != 6:
+        sys.exit(1)
+
+    # Check PIN hash file exists
+    pin_file = f"/etc/pinlock/{username}"
+    if not os.path.exists(pin_file):
+        sys.exit(2)   # no PIN set — fall through
+
+    try:
+        with open(pin_file, "r") as f:
+            stored_hash = f.read().strip()
+    except PermissionError:
+        # Script must run as root (pam_exec runs as root)
+        sys.exit(1)
+
+    try:
+        from passlib.hash import sha512_crypt
+        if sha512_crypt.verify(authtok, stored_hash):
+            sys.exit(0)   # success
+        else:
+            sys.exit(1)   # wrong PIN
+    except Exception:
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

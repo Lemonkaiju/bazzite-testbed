@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Khan Academy
+Comment=Free maths and science lessons - great for algebra help
+Exec=xdg-open https://www.khanacademy.org
+Icon=applications-education
+Terminal=false
+Type=Application
+Categories=Education;

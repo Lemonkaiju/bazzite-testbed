@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=TypeRacer
+Comment=Competitive typing racing game - race against other players online
+Exec=xdg-open https://typeracer.com
+Icon=input-keyboard
+Terminal=false
+Type=Application
+Categories=Education;Game;KidsGame;

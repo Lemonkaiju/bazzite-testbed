@@ -1,0 +1,2 @@
+#!/bin/bash
+exec python3 /usr/share/lemonkaijuos/ai_facilitator/pin_auth/cli.py "$@"

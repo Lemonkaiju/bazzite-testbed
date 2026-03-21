@@ -1,0 +1,11 @@
+/* LemonKaijuOS — AI Facilitator Flatpak permissions */
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.Flatpak.app-install" ||
+        action.id == "org.freedesktop.Flatpak.app-uninstall" ||
+        action.id == "org.freedesktop.Flatpak.runtime-install" ||
+        action.id == "org.freedesktop.Flatpak.runtime-uninstall") {
+        if (subject.isInGroup("wheel")) {
+            return polkit.Result.YES;
+        }
+    }
+});

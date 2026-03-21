@@ -1,10 +1,10 @@
 ---
-# Universal Bazzite build for gaming, productivity, and tablets
-name: bazzite-testbed
-description: Hardware-optimized Bazzite with gaming, productivity, and creative tools. Supports tablets, laptops, and desktops with automatic hardware detection.
+# LemonKaijuOS - Privacy-focused family operating system
+name: lemonkaijuos
+description: Privacy-first family OS with PIN authentication, security profiles, and STFD integration.
 
 base-image: ghcr.io/ublue-os/bazzite
-image-version: latest
+image-version: stable
 
 modules:
   - type: rpm-ostree
@@ -13,47 +13,36 @@ modules:
       - iio-sensor-proxy
       - fprintd
       - fprintd-pam
-      # Gaming & 3D compatibility
-      - mesa-vulkan-drivers.i686
-      - vulkan-loader.i686
-      # Terminal tools
-      - zsh
-      - fish
+      # Python runtime and Fedora-packaged deps
+      - python3-pip
+      - python3-flask
+      - python3-psutil
+      - python3-pyudev
+      - python3-pyyaml
+      - python3-passlib
 
   - type: default-flatpaks@v1
     notify: true
     system:
       install:
-        # Development
-        - org.godotengine.Godot
-        - com.visualstudio.code
-        # Web & Remote
-        - com.google.Chrome
-        - com.microsoft.Edge
-        - org.mozilla.Thunderbird
-        - com.rustdesk.RustDesk
-        # Media & Creativity
-        - com.spotify.Client
-        - org.kde.krita
-        - org.audacityteam.Audacity
-        - org.blender.Blender
-        - org.tuxpaint.Tuxpaint
-        - com.github.xournalpp.xournalpp
-        - io.lmms.LMMS
-        # Games
-        - info.beyondallreason.bar
-        - com.github.Anuken.Mindustry
-        - net.minetest.Minetest
-        - com.play0ad.zeroad
-        - net.veloren.veloren
+        # Essential apps (always installed)
+        - org.mozilla.firefox
+        - org.onlyoffice.desktopeditors
+        - org.remmina.Remmina
+        # All other apps installed via first-boot wizard
 
   - type: systemd
     system:
       enabled:
-        - sshd
         - iio-sensor-proxy
         - fprintd
+        # SSH disabled by default, enabled via first-boot if STFD integration chosen
+
+  - type: files
+    # Overlays files/system/ onto image root.
+    # All LemonKaijuOS content is pre-staged there — no path hacks needed.
 
   - type: script
     scripts:
       - hardware-tuning.sh
+      - lemonkaijuos-setup.sh

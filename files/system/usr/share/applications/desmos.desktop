@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Desmos Graphing Calculator
+Comment=Visual algebra and graphing - type an equation and see it instantly
+Exec=xdg-open https://www.desmos.com/calculator
+Icon=applications-education
+Terminal=false
+Type=Application
+Categories=Education;

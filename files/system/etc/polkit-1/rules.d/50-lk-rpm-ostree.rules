@@ -1,0 +1,8 @@
+/* LemonKaijuOS — AI Facilitator rpm-ostree rollback permission */
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.projectatomic.rpmostree1.rollback") {
+        if (subject.isInGroup("wheel")) {
+            return polkit.Result.YES;
+        }
+    }
+});

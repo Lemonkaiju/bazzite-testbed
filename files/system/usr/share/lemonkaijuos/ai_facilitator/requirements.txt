@@ -1,0 +1,25 @@
+# AI Facilitator Framework Requirements
+# Python 3.10+
+
+# Core dependencies
+flask>=3.0.0
+flask-cors>=4.0.0
+
+# MCP integration (if using Python MCP client)
+# Note: MCP servers run via npx, but we may need Python client
+mcp>=0.1.0
+
+# System monitoring
+psutil>=5.9.0
+
+# USB device detection
+pyudev>=0.24.0
+
+# Async support
+aiohttp>=3.9.0
+
+# Configuration
+pyyaml>=6.0.0
+
+# Logging
+colorlog>=6.8.0
