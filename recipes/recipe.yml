@@ -39,8 +39,9 @@ modules:
         # SSH disabled by default, enabled via first-boot if STFD integration chosen
 
   - type: files
-    # Overlays files/system/ onto image root.
-    # All LemonKaijuOS content is pre-staged there — no path hacks needed.
+    files:
+      - source: system   # maps files/system/ → / in the image
+        destination: /
 
   - type: script
     scripts:

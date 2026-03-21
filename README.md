@@ -1,50 +1,26 @@
-# LemonKaijuOS - Easy Gaming & Productivity Build
+# Bazzite for Dell Latitude 5320/7320
 
-A custom Bazzite-based Linux distribution that comes pre-loaded with games, creative tools, and productivity apps. Built for families and users who want a "just works" experience with everything ready to go.
+This repository contains a custom Bazzite image optimized for Dell Latitude 2-in-1s and tablets (specifically the 5320 and 7320).
 
-## What's Included
+## Included Fixes:
+- **Screen Flickering:** `i915.enable_psr=0` (Tiger Lake iGPU fix).
+- **Deep Sleep:** `mem_sleep_default=deep` (Battery drain fix).
+- **Auto-Rotation:** `iio-sensor-proxy` built-in and enabled.
+- **Biometrics:** `fprintd` enabled for fingerprint login.
+- **Tablet Mode:** Early-load modules (`pinctrl_tigerlake`, `soc_button_array`) via Dracut.
 
-### 🎮 Gaming Ready
-- Steam pre-configured with Proton
-- Godot Engine for game development
-- Gaming drivers and optimizations
-- Controller support out of the box
+## Included Software:
+- Godot Engine, VS Code, Chrome, Microsoft Edge, Thunderbird, Spotify, RustDesk.
 
-### 🛠️ Creative & Productivity Tools
-- VS Code with popular extensions
-- Chrome and Microsoft Edge browsers
-- Thunderbird email client
-- Spotify for music streaming
-- RustDesk for remote access
+## How to Install on your New Device (Thursday):
 
-### 🖥️ Hardware Optimizations
-- Universal hardware detection and optimization
-- Automatic hardware-specific module loading
-- Sensor support for rotation and touch (when hardware detected)
-- Fingerprint login (fprintd)
-- Hardware-specific optimizations for detected devices
-
-### 🔒 Privacy & Security
-- Mullvad Browser pre-configured
-- Enhanced privacy settings
-- No telemetry or tracking
-
-## Perfect For
-- **Family PCs** - Living room, kitchen, bedroom setups
-- **Gaming Desktops** - Steam deck alternative
-- **Creative Workstations** - Development and content creation
-- **2-in-1 Laptops** - Tablet mode with touch support
-
-## Installation
-
-### Option A: Rebase Method (Recommended)
-1. Install standard Bazzite (KDE) from official USB
-2. Run: `rpm-ostree rebase ostree-image-signed:docker://ghcr.io/lemonkaiju/bazzite-testbed:latest`
-3. Reboot and enjoy!
+### Option A: The "Rebase" Method (Recommended)
+1. Install standard **Bazzite (KDE)** using any official USB.
+2. Open a terminal and run:
+   ```bash
+   rpm-ostree rebase ostree-image-signed:docker://ghcr.io/lemonkaiju/bazzite-testbed:latest
+   ```
+3. Reboot. your device is now fully configured!
 
 ### Option B: Custom ISO
-Download the pre-built ISO from GitHub Releases for a fresh installation.
-
----
-
-Built with ❤️ for families who want privacy without complexity.
+The custom ISO generation is being stubborn on GitHub's environment. For now, **Option A** is the fastest and most reliable way to get your "testbed" configuration onto the physical metal.
