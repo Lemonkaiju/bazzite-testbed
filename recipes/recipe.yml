@@ -3,7 +3,7 @@
 name: lemonkaijuos
 description: Privacy-first family OS with PIN authentication, security profiles, and STFD integration.
 
-base-image: ghcr.io/ublue-os/bazzite
+base-image: ghcr.io/ublue-os/bazzite-nvidia-open
 image-version: stable
 
 modules:
