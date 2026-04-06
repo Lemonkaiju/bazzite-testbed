@@ -13,6 +13,8 @@ modules:
       - iio-sensor-proxy
       - fprintd
       - fprintd-pam
+      # Gaming compatibility
+      - libgdiplus
       # Python runtime and Fedora-packaged deps
       - python3-pip
       - python3-flask
